@@ -2,5 +2,4 @@ FROM python:3.8-slim-buster
 WORKDIR /ramoloss
 COPY . .
 RUN pip install -r requirements.txt
-ENV DISCORD_TOKEN=${DISCORD_TOKEN}
-CMD [ "python", "-m", "main.py"]
+CMD [ "python", "main.py"]
