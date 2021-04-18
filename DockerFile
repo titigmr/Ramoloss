@@ -1,6 +1,7 @@
-FROM python:3.8-sim-buster
+FROM python:3.8-slim-buster
 WORKDIR /ramoloss
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 ENV DISCORD_TOKEN=${DISCORD_TOKEN}
-CMD [ "python", "main.py"]
+RUN echo $DISCORD_TOKEN
+CMD [ "python", "-m", "main.py"]
