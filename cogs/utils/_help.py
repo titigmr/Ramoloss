@@ -1,14 +1,15 @@
 import discord
 import json
+import os
 
-with open('../../config.json') as f:
-    config_arg = json.load(f)
+with open('config.json') as f:
+    config_arg = json.load(f)["command_prefix"]
 
 
 TITLE_UFD = "**Ultimate frame data**"
-DESCRIPTION_COMMAND_UFD = """
+DESCRIPTION_COMMAND_UFD = f"""
                     Get all characters name with -l option (show links)
-                    $ufd list [search] -l
+                    {config_arg}ufd list [search] -l
                     """
 
 

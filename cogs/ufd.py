@@ -6,11 +6,9 @@ import requests
 from bs4 import BeautifulSoup
 from discord.ext import commands
 
-from cogs.utils import (DEFAULT_EXCLUDE_OVERALL_STATS, DEFAULT_STATS, REF_ATK,
-                        UltimateFD, HelperCommand, ParseArgs)
-
-
-
+from cogs.utils import (
+    DEFAULT_EXCLUDE_OVERALL_STATS, DEFAULT_STATS, REF_ATK, UltimateFD, HelperCommand,
+    ParseArgs, TITLE_UFD, DESCRIPTION_COMMAND_UFD)
 
 
 class UFD(commands.Cog, HelperCommand, ParseArgs):
@@ -25,7 +23,7 @@ class UFD(commands.Cog, HelperCommand, ParseArgs):
 
         if command is None or 'help' in command:
             await ctx.channel.send(embed=self.help(
-                title=TITLE, description_command=DESCRIPTION_COMMAND))
+                title=TITLE_UFD, description_command=DESCRIPTION_COMMAND_UFD))
             return
 
         if command == 'list':
@@ -33,9 +31,8 @@ class UFD(commands.Cog, HelperCommand, ParseArgs):
             if selection is None and get_link is None:
                 await ctx.send('Too much arguments')
                 return
-            out = self.show_list(
-                ctx=ctx, selection=selection, get_link=get_link)
 
+            out = self.show_list(ctx=ctx, selection=selection, get_link=get_link)
             em = self.show_wrap(string_to_out=out, title='Liste des personnages')
             for m in em:
                 await ctx.send(embed=m)
@@ -55,14 +52,22 @@ class UFD(commands.Cog, HelperCommand, ParseArgs):
                     options = 'all'
                 print(command, options)
                 try:
-                    char = UltimateFD(character=command, moves=options)
+                    char = UltimateFD(character=command, moves=options,
+                                      get_hitbox=False, args_stats=None)
                 except (ValueError, KeyError) as f:
                     return f
 
-                em = self.show_wrap(string_to_out=char.stats,
-                                    title=char.char, formating=str)
-                for m in em:
-                    await ctx.send(embed=m)
+                embed = discord.Embed(title=f"**{char.char.title()}**", color=0x03f8fc)
+
+                for move, statistics in char.stats.items():
+                    v = ''
+                    for stats, amount in statistics.items():
+                        v += f'{stats.title()} : {amount}\n'
+
+                    embed.add_field(name=f'**{move.title()}**',
+                                    value=v,
+                                    inline=False)
+                await ctx.send(embed=embed)
 
     def parse_command_list(self, args):
         grep = None
