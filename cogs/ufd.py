@@ -1,36 +1,34 @@
 import re
-from utils import UltimateFD, REF_ATK, DEFAULT_STATS, DEFAULT_EXCLUDE_OVERALL_STATS
 from textwrap import TextWrapper
-
 
 import discord
 import requests
 from bs4 import BeautifulSoup
 from discord.ext import commands
 
+from utils import (DEFAULT_EXCLUDE_OVERALL_STATS, DEFAULT_STATS, REF_ATK,
+                   UltimateFD, HelperCommand)
 
-class UFD(commands.Cog):
+
+TITLE = "**Ultimate frame data**"
+DESCRIPTION_COMMAND = """
+                    Get all characters name with -l option (show links)
+                    $ufd list [search] -l
+                    """
+
+
+class UFD(commands.Cog, HelperCommand):
     def __init__(self, bot):
+        ufd = UltimateFD(character=None, moves=None)
         self.bot = bot
-        self.url = "https://ultimateframedata.com"
-
-    def get_all_characters(self, url):
-        soup = BeautifulSoup(requests.get(url).content, 'lxml')
-        characters = {}
-        for i in soup.find_all('a'):
-            href = i["href"]
-            if ('.php' in href) and ('stats' not in href):
-                name = href[1:].replace('.php', '')
-                url_c = url + href
-                characters[name] = url_c
-        return characters
+        self.url = ufd.url
+        self.get_all_characters = ufd._get_all_characters
 
     @commands.command(name='ufd')
     async def character(self, ctx, command, *args):
 
-
         if command is None or 'help' in command:
-            await ctx.channel.send(embed=self.help())
+            await ctx.channel.send(embed=self.help(title=TITLE, description_command=DESCRIPTION_COMMAND))
             return
 
         if command == 'list':
@@ -39,21 +37,10 @@ class UFD(commands.Cog):
                 await ctx.send('Too much arguments')
                 return
 
-            em = self.show_list(ctx=ctx, selection=selection, get_link=get_link)
+            em = self.show_list(
+                ctx=ctx, selection=selection, get_link=get_link)
             for i in em:
                 await ctx.send(embed=i)
-
-    def help(self):
-        title = "**Ultimate frame data**"
-        description_command = """
-                                Get all characters name
-                                $ufd list [search] -l
-                                -l : show links
-                                """
-
-        e = discord.Embed(title=title,
-                          description=description_command)
-        return e
 
     def parse_command_list(self, args):
         grep = None

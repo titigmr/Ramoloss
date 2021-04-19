@@ -3,8 +3,32 @@ from discord.ext import commands
 import numpy as np
 import re
 
+from utils import HelperCommand
 
-class Dice(commands.Cog):
+
+TITLE = "**Roll a random dice**"
+DESCRIPTION_COMMAND = """
+                        Roll one six sided die.
+                        $d 1d6
+
+                        Roll two four sided die.
+                        $d 2d4
+
+                        Roll one -101 to 150 sided die.
+                        $d 1d[-101:150]
+
+                        Add a one six sided die and a eight sided die (all display).
+                        $d 1d6 + 1d8 -v
+
+                        Minus a one six sided die and a eight sided die (only output).
+                        $d 1d6 - 1d8
+
+                        Add 6 at a one sided die.
+                        $d 1d6 + 6
+                        """
+
+
+class Dice(commands.Cog, HelperCommand):
     def __init__(self, bot):
         self.bot = bot
 
@@ -27,32 +51,6 @@ class Dice(commands.Cog):
                 return False
         return True
 
-    def help(self):
-        title = "**Roll a random dice**"
-        description_command = """
-                                Roll one six sided die.
-                                $d 1d6
-
-                                Roll two four sided die.
-                                $d 2d4
-
-                                Roll one -101 to 150 sided die.
-                                $d 1d[-101:150]
-
-                                Add a one six sided die and a eight sided die (all display).
-                                $d 1d6 + 1d8 -v
-
-                                Minus a one six sided die and a eight sided die (only output).
-                                $d 1d6 - 1d8
-
-                                Add 6 at a one sided die.
-                                $d 1d6 + 6
-                                """
-
-        e = discord.Embed(title=title,
-                          description=description_command)
-        return e
-
     @commands.command(name='d')
     async def d(self, ctx, *args):
         "Roll a random dice (use `$d help` for using examples)"
@@ -64,7 +62,7 @@ class Dice(commands.Cog):
             return
 
         if len(args) < 1 or ('help' in args):
-            await ctx.channel.send(embed=self.help())
+            await ctx.channel.send(embed=self.help(title=TITLE, description_command=DESCRIPTION_COMMAND))
             return
 
         values = []
