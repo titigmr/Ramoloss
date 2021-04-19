@@ -29,7 +29,6 @@ DEFAULT_EXCLUDE_OVERALL_STATS = ["Stats", "Initial Dash", 'Walk Speed',
                                  "SH / FH / SHFF / FHFF Frames", 'Shield Drop', 'Jump Squat']
 
 
-
 class UltimateFD:
     def __init__(self, character, moves,
                  args_stats=None,
@@ -37,7 +36,14 @@ class UltimateFD:
                  exclude_stats=['movename',
                                 'whichhitbox', 'notes'],
                  exclude_moves=['dodge']):
-
+        """
+        Args:
+            character: name of character]
+            moves: list of moves
+            args_stats (list, optional): stats of the move. Defaults to None.
+            get_hitbox (bool, optional): get hitbox. Defaults to False.
+        """
+        self.char = character
         self.out = exclude_moves
         self.exclude_stats = exclude_stats
         self.args_stats = args_stats
@@ -67,6 +73,7 @@ class UltimateFD:
         if len(self.stats) == 0:
             raise KeyError(
                 f'No moves found. Moves must be in: {list(REF_ATK.keys())}')
+
 
     def _get_soup(self, url):
         r = requests.get(url)
@@ -103,10 +110,6 @@ class UltimateFD:
                 if arg in available_stats:
                     val = self._format_stats(soup=s, class_name=arg)
                     out_stats[arg] = val
-                else:
-                    raise ValueError(
-                        f'{arg} is not available. Make sure you are choosing in: {available_stats}')
-
             out_move[m] = out_stats
         return out_move
 

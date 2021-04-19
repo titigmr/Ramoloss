@@ -18,11 +18,8 @@ class Poll(commands.Cog, HelperCommand, ParseArgs):
     def __init__(self, bot):
         self.bot = bot
 
-
-
     @commands.command(name="poll")
     async def poll(self, ctx):
-        "Create a poll (use $poll help for using examples)."
         message = ctx.message
         if not message.author.bot:
             message_content = message.clean_content
