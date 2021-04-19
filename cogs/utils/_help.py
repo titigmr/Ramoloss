@@ -12,6 +12,19 @@ DESCRIPTION_COMMAND_UFD = f"""
                     {config_arg}ufd list [search] -l
                     """
 
+TITLE_POLL = "**Create a poll**"
+DESCRIPTION_COMMAND_POLL = f"""
+                        Create a simple poll.
+                        {config_arg}poll Kenshuri is a troll?
+
+                        For advanced polls use the folowing syntax:
+                        {config_arg}poll {{title}} [Option1] [Option2] [Option 3] ...
+
+                        Note: options are limited at 21.
+                        """
+
+
+
 
 class HelperCommand:
     def __init__(self):
