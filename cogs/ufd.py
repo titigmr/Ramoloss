@@ -17,6 +17,7 @@ class UFD(commands.Cog, HelperCommand, ParseArgs):
         self.bot = bot
         self.url = ufd.url
         self.get_all_characters = ufd._get_all_characters
+        self.ref_atk = ufd.REF_ATK
 
     @commands.command(name='ufd')
     async def character(self, ctx, command=None, *args):
@@ -50,7 +51,7 @@ class UFD(commands.Cog, HelperCommand, ParseArgs):
                         return "Please make sure you are using the format '$ufd character [Move1] [Move2] [Move3]'"
                 else:
                     options = 'all'
-                print(command, options)
+
                 try:
                     char = UltimateFD(character=command, moves=options,
                                       get_hitbox=True, args_stats=None)
