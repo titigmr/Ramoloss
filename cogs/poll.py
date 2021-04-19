@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from utils import EMOJI, HelperCommand
+from cogs.utils import EMOJI, HelperCommand
 
 TITLE = "**Create a poll**"
 DESCRIPTION_COMMAND = """

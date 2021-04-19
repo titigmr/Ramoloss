@@ -6,8 +6,8 @@ import requests
 from bs4 import BeautifulSoup
 from discord.ext import commands
 
-from utils import (DEFAULT_EXCLUDE_OVERALL_STATS, DEFAULT_STATS, REF_ATK,
-                   UltimateFD, HelperCommand)
+from cogs.utils import (DEFAULT_EXCLUDE_OVERALL_STATS, DEFAULT_STATS, REF_ATK,
+                        UltimateFD, HelperCommand)
 
 
 TITLE = "**Ultimate frame data**"

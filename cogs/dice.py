@@ -3,7 +3,7 @@ from discord.ext import commands
 import numpy as np
 import re
 
-from utils import HelperCommand
+from cogs.utils import HelperCommand
 
 
 TITLE = "**Roll a random dice**"
