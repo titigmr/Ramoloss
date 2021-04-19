@@ -2,19 +2,18 @@ import discord
 from discord.ext.commands import Bot
 
 class Ramoloss(Bot):
-    def __init__(self, config, token, extensions=None):
+    def __init__(self, config, token):
         self.config = config
-        self.extensions_name = extensions
         self.discord_token = token
         super().__init__(
-            command_prefix=config["command_prefix"],
-            description=config["description"]
+            command_prefix=self.config["command_prefix"],
+            description=self.config["description"]
         )
-        for extension in extensions:
+        for extension in self.config["extensions"]:
             self.load_extension(extension)
 
     async def on_ready(self):
-        print(f'Logged in as {self.user} with extensions: {" ; ".join(self.extensions_name).replace("cogs.","")}')
+        print(f'Logged in as {self.user} with extensions: {" ".join(self.extensions).replace("cogs.","")}')
 
     def run(self):
         super().run(self.discord_token, reconnect=True)
