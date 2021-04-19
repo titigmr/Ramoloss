@@ -2,33 +2,20 @@ import discord
 from discord.ext import commands
 from cogs.utils import EMOJI, HelperCommand, ParseArgs
 
-TITLE = "**Create a poll**"
-DESCRIPTION_COMMAND = """
-                        Create a simple poll.
-                        $poll Kenshuri is a troll?
-
-                        For advanced polls use the folowing syntax:
-                        $poll {title} [Option1] [Option2] [Option 3] ...
-
-                        Note: options are limited at 21.
-                        """
-
 
 class Poll(commands.Cog, HelperCommand, ParseArgs):
     def __init__(self, bot):
         self.bot = bot
 
-
-
     @commands.command(name="poll")
     async def poll(self, ctx):
-        "Create a poll (use $poll help for using examples)."
         message = ctx.message
         if not message.author.bot:
             message_content = message.clean_content
             if message_content.find("{") == -1:
                 if 'help' in message_content:
-                    await ctx.send(embed=self.help(title=TITLE, description_command=DESCRIPTION_COMMAND))
+                    await ctx.send(embed=self.help(title=TITLE,
+                                    description_command=DESCRIPTION_COMMAND))
                 else:
                     await message.add_reaction('✅')
                     await message.add_reaction('❌')

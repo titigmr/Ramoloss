@@ -22,12 +22,11 @@ REF_ATK = {"ftilt": 'forward tilt',
            'stats': 'stats',
            'da': 'dash attack'}
 
-DEFAULT_STATS = ["startup", "advantage",
+DEFAULT_STATS = ["startup", "advantage", "activeframes",
                  "totalframes", "basedamage", "shieldstun"]
 
 DEFAULT_EXCLUDE_OVERALL_STATS = ["Stats", "Initial Dash", 'Walk Speed',
                                  "SH / FH / SHFF / FHFF Frames", 'Shield Drop', 'Jump Squat']
-
 
 
 class UltimateFD:
@@ -38,6 +37,7 @@ class UltimateFD:
                                 'whichhitbox', 'notes'],
                  exclude_moves=['dodge']):
 
+        self.char = character
         self.out = exclude_moves
         self.exclude_stats = exclude_stats
         self.args_stats = args_stats
@@ -67,6 +67,7 @@ class UltimateFD:
         if len(self.stats) == 0:
             raise KeyError(
                 f'No moves found. Moves must be in: {list(REF_ATK.keys())}')
+
 
     def _get_soup(self, url):
         r = requests.get(url)
@@ -103,10 +104,6 @@ class UltimateFD:
                 if arg in available_stats:
                     val = self._format_stats(soup=s, class_name=arg)
                     out_stats[arg] = val
-                else:
-                    raise ValueError(
-                        f'{arg} is not available. Make sure you are choosing in: {available_stats}')
-
             out_move[m] = out_stats
         return out_move
 
