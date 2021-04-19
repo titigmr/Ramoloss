@@ -51,7 +51,7 @@ $d 1d6 + 6
 ## Poll
 Module permettant de créer des sondages sur Discord. Voici un exemple d'utilisation : 
 
-`
+```
 Create a simple poll.
 $poll Qui joue ?
 
@@ -59,4 +59,4 @@ For advanced polls use the folowing syntax:
 $poll {title} [Option1] [Option2] [Option 3] ...
 
 Note: options are limited at 21.
-`
+```
