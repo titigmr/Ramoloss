@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from cogs.utils import EMOJI, HelperCommand
+from cogs.utils import EMOJI, HelperCommand, ParseArgs
 
 TITLE = "**Create a poll**"
 DESCRIPTION_COMMAND = """
@@ -14,28 +14,11 @@ DESCRIPTION_COMMAND = """
                         """
 
 
-class Poll(commands.Cog, HelperCommand):
+class Poll(commands.Cog, HelperCommand, ParseArgs):
     def __init__(self, bot):
         self.bot = bot
 
-    def find_title(self, message):
-        first = message.find('{') + 1
-        last = message.find('}')
-        if first == 0 or last == -1:
-            return "Not using the command correctly"
-        return message[first:last]
 
-    def find_options(self, message, options):
-        first = message.find('[') + 1
-        last = message.find(']')
-        if (first == 0 or last == -1):
-            if len(options) < 2:
-                return "Not using the command correctly"
-            else:
-                return options
-        options.append(message[first:last])
-        message = message[last+1:]
-        return self.find_options(message, options)
 
     @commands.command(name="poll")
     async def poll(self, ctx):

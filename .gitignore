@@ -1,5 +1,6 @@
 # Code
 .vscode
+.pylintrc
 
 # Jupyter Notebook
 .ipynb_checkpoints
@@ -9,3 +10,4 @@
 
 # import
 __pycache__
+

@@ -10,6 +10,7 @@ from cogs.utils import (DEFAULT_EXCLUDE_OVERALL_STATS, DEFAULT_STATS, REF_ATK,
                         UltimateFD, HelperCommand)
 
 
+
 TITLE = "**Ultimate frame data**"
 DESCRIPTION_COMMAND = """
                     Get all characters name with -l option (show links)
