@@ -53,21 +53,30 @@ class UFD(commands.Cog, HelperCommand, ParseArgs):
                 print(command, options)
                 try:
                     char = UltimateFD(character=command, moves=options,
-                                      get_hitbox=False, args_stats=None)
+                                      get_hitbox=True, args_stats=None)
                 except (ValueError, KeyError) as f:
-                    return f
-
-                embed = discord.Embed(title=f"**{char.char.title()}**", color=0x03f8fc)
+                    await ctx.send(f'{f}')
+                    return
 
                 for move, statistics in char.stats.items():
+                    hb = None
+                    embed = discord.Embed(
+                        title=f"**{char.char.title().replace('_', ' ')} – {move.title()}**",
+                        color=0x03f8fc,
+                        url=self.url + char.char)
                     v = ''
                     for stats, amount in statistics.items():
-                        v += f'{stats.title()} : {amount}\n'
+                        if stats == 'hitbox':
+                            hb = amount
+                        else:
+                            amount_c = str(f"""```css\n{amount}```""")
+                            embed.add_field(name=f'**{stats.title()}**',
+                                    value=amount_c,
+                                    inline=True)
 
-                    embed.add_field(name=f'**{move.title()}**',
-                                    value=v,
-                                    inline=False)
-                await ctx.send(embed=embed)
+                    await ctx.send(embed=embed)
+                    if hb is not None:
+                        await ctx.send(hb)
 
     def parse_command_list(self, args):
         grep = None
@@ -98,12 +107,8 @@ class UFD(commands.Cog, HelperCommand, ParseArgs):
             names = [name for name in all_characters if selection in name]
         return names
 
-    def show_wrap(self, string_to_out, title, wrap_at=1000, formating=None):
-        if formating is not None:
-            output = formating(string_to_out)
-        else:
-            output = "\n".join(string_to_out)
-
+    def show_wrap(self, string_to_out, title, wrap_at=1000):
+        output = "\n".join(string_to_out)
         send_messages = TextWrapper(wrap_at,
                                     break_long_words=False,
                                     replace_whitespace=False).wrap(output)

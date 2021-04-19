@@ -22,7 +22,7 @@ REF_ATK = {"ftilt": 'forward tilt',
            'stats': 'stats',
            'da': 'dash attack'}
 
-DEFAULT_STATS = ["startup", "advantage",
+DEFAULT_STATS = ["startup", "advantage", "activeframes",
                  "totalframes", "basedamage", "shieldstun"]
 
 DEFAULT_EXCLUDE_OVERALL_STATS = ["Stats", "Initial Dash", 'Walk Speed',
@@ -36,13 +36,7 @@ class UltimateFD:
                  exclude_stats=['movename',
                                 'whichhitbox', 'notes'],
                  exclude_moves=['dodge']):
-        """
-        Args:
-            character: name of character]
-            moves: list of moves
-            args_stats (list, optional): stats of the move. Defaults to None.
-            get_hitbox (bool, optional): get hitbox. Defaults to False.
-        """
+
         self.char = character
         self.out = exclude_moves
         self.exclude_stats = exclude_stats
