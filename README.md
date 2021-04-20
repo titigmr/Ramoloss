@@ -1,17 +1,19 @@
 # Ramoloss
 
 
-## Installation utilisateur
+## Installation sur un serveur Discord
 
 ...
 
 
-## Modules
+## Modules disponibles
 
-- Dice
-- UFD
-- Poll
-- John
+* [Dice](#dice) : simule des lancés de dés
+* [UFD](#Ultimate-Frame-Data-(UFD)) : retourne les statistiques des personnages du jeu SSBU
+* [Poll](#poll) : permet de créer des sondages
+* [Johns](#johns) : prédit si un joueur est de mauvaise foi
+
+<br>
 
 ### Dice
 Module qui permet de simuler des lancers de dés. Quelques exemples d'utilisations :
@@ -31,7 +33,7 @@ Choisis un nombre aléatoire entre -101 et 150
 $d 1d[-101:150]
 ```
 
-Additionne un lancé de dé à six face puis un dé à huits faces en affichant les valeurs intémédiaires 
+Additionne un lancé de dé à six face puis un dé à huits faces en affichant les valeurs intémédiaires
 ```
 $d 1d6 + 1d8 -v
 ```
@@ -63,6 +65,9 @@ $ufd wario [fair]
 <br>
 
 <img src='img/example_ufd.gif'>
+
+<br>
+<br>
 
 ### Poll
 Module permettant de créer des sondages sur Discord. Voici un exemple d'utilisation :
