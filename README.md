@@ -45,8 +45,11 @@ $d 1d6 + 6
 
 ...
 
-## UFD
+## Ultimate Frame Data (UFD)
 
+
+
+<img src='img/example_ufd.gif'>
 
 ## Poll
 Module permettant de créer des sondages sur Discord. Voici un exemple d'utilisation : 
