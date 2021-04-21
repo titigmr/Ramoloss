@@ -5,6 +5,7 @@
         "cogs.dice",
         "cogs.john",
         "cogs.poll",
-        "cogs.ufd"
+        "cogs.ufd",
+        "cogs.settings"
     ]
 }
