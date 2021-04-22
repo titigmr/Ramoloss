@@ -6,10 +6,6 @@ class John(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name='hello')
-    async def say_hello(self, ctx):
-        await ctx.channel.send(f'Hello {ctx.author.name}')
-
     @commands.Cog.listener()
     async def on_message(self, message):
         if message.author.id == self.bot.user.id:

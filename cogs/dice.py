@@ -3,29 +3,7 @@ from discord.ext import commands
 import numpy as np
 import re
 
-from cogs.utils import HelperCommand
-
-
-TITLE = "**Roll a random dice**"
-DESCRIPTION_COMMAND = """
-                        Roll one six sided die.
-                        $d 1d6
-
-                        Roll two four sided die.
-                        $d 2d4
-
-                        Roll one -101 to 150 sided die.
-                        $d 1d[-101:150]
-
-                        Add a one six sided die and a eight sided die (all display).
-                        $d 1d6 + 1d8 -v
-
-                        Minus a one six sided die and a eight sided die (only output).
-                        $d 1d6 - 1d8
-
-                        Add 6 at a one sided die.
-                        $d 1d6 + 6
-                        """
+from cogs.utils import HelperCommand, TITLE_DICE, DESCRIPTION_COMMAND_DICE
 
 
 class Dice(commands.Cog, HelperCommand):
@@ -62,7 +40,7 @@ class Dice(commands.Cog, HelperCommand):
             return
 
         if len(args) < 1 or ('help' in args):
-            await ctx.channel.send(embed=self.help(title=TITLE, description_command=DESCRIPTION_COMMAND))
+            await ctx.channel.send(embed=self.help(title=TITLE_DICE, description_command=DESCRIPTION_COMMAND_DICE))
             return
 
         values = []

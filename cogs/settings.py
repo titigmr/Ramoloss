@@ -6,39 +6,17 @@ from discord.ext import commands
 class Settings(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.path = 'cogs.'
 
-    @commands.command(name="load", hidden=True)
-    @commands.is_owner()
-    async def load(self, ctx, *, cog: str):
-        try:
-            self.bot.load_extension(self.path + cog)
-        except Exception as e:
-            await ctx.send(f"**`ERROR: {e}`**")
-        else:
-            await ctx.send("**`SUCCESS`**")
+    @commands.command(name='hello')
+    async def say_hello(self, ctx):
+        await ctx.channel.send(f'Hello {ctx.author.name}')
 
-    @commands.command(name="unload", hidden=True)
-    @commands.is_owner()
-    async def unload(self, ctx, *, cog: str):
-        print(cog)
-        try:
-            self.bot.unload_extension(self.path + cog)
-        except Exception as e:
-            await ctx.send(f"**`ERROR: {e}`**")
-        else:
-            await ctx.send("**`SUCCESS`**")
 
-    @commands.command(name="reload", hidden=True)
-    @commands.is_owner()
-    async def reload(self, ctx, *, cog: str):
-        try:
-            self.bot.unload_extension(self.path + cog)
-            self.bot.load_extension(self.path + cog)
-        except Exception as e:
-            await ctx.send(f"**`ERROR: {e}`**")
-        else:
-            await ctx.send("**`SUCCESS`**")
+    @commands.has_permissions(administrator=True)
+    @commands.command(name='set_prefix')
+    async def set_prefix(self, ctx, *, new_prefix: str):
+        self.bot.command_prefix = new_prefix
+        await ctx.send(f'Prefix has been set to `{new_prefix}`.')
 
 def setup(bot):
     bot.add_cog(Settings(bot))

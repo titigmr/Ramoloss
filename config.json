@@ -6,6 +6,7 @@
         "cogs.john",
         "cogs.poll",
         "cogs.ufd",
+        "cogs.owner",
         "cogs.settings"
     ]
 }
