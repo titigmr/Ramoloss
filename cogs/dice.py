@@ -23,7 +23,7 @@ class Dice(commands.Cog, HelperCommand):
                     return False
             elif (n % 2) == 0:
                 if len(number.findall(a)) < 1:
-                    if a not in ['-v']:
+                    if a != '-v':
                         return False
             else:
                 return False
@@ -31,7 +31,7 @@ class Dice(commands.Cog, HelperCommand):
 
     @commands.command(name='d')
     async def d(self, ctx, *args):
-        "Roll a random dice (use `$d help` for using examples)"
+        """Roll a random dice (use `$d help` for using examples)"""
         calculation = False
         verbose = True
 
