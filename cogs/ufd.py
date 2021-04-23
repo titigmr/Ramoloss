@@ -85,7 +85,6 @@ class UFD(commands.Cog, HelperCommand, ParseArgs):
                     embed=discord.Embed(
                         title=f"**{char.char.title().replace('_', ' ')} – {move.title()}**",
                         color=0x03f8fc, url=self.url + char.char)
-                    v = ''
                     for stats, amount in statistics.items():
                         if stats == 'hitbox':
                             hb=amount
