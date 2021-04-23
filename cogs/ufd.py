@@ -65,9 +65,9 @@ class UFD(commands.Cog, HelperCommand, ParseArgs):
                 if len(args) == 1:
                     options=re.findall('[a-z]+', args[0])
                 elif len(args) >= 1:
-                    args="".join(args)
+                    arguments="".join(args)
                     try:
-                        options=self.find_options(message=args, options=[])
+                        options=self.find_options(message=arguments, options=[])
                     except:
                         return "Please make sure you are using the format '$ufd character [Move1] [Move2] [Move3]'"
                 else:
@@ -85,7 +85,7 @@ class UFD(commands.Cog, HelperCommand, ParseArgs):
                     embed=discord.Embed(
                         title=f"**{char.char.title().replace('_', ' ')} – {move.title()}**",
                         color=0x03f8fc, url=self.url + char.char)
-                    v=''
+                    v = ''
                     for stats, amount in statistics.items():
                         if stats == 'hitbox':
                             hb=amount
