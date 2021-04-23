@@ -60,6 +60,7 @@ class Dice(commands.Cog, HelperCommand):
                         high = l.split('d')
                     else:
                         await ctx.send("Bad request, please use $d help.")
+                        return
                 if (int(size) > 1) and (calculation):
                     await ctx.send('Calculation with more than one dice'
                                    'is not currently supported.')
