@@ -50,4 +50,3 @@ class HelperCommand:
         e = discord.Embed(title=title,
                           description=description_command)
         return e
-
