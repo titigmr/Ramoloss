@@ -15,7 +15,7 @@ class Dice(commands.Cog, HelperCommand):
         number = re.compile(r'[0-9]*')
         for n, a in enumerate(args):
             if 'd' in a:
-                if (not '[' in a) and (']' not in a):
+                if ('[' not in a) and (']' not in a):
                     if len(roll.findall(a)) < 1:
                         return False
             elif (n % 2) != 0:
