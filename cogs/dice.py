@@ -51,9 +51,18 @@ class Dice(commands.Cog, HelperCommand):
 
         for l in args:
             if 'd' in l:
-                size, high = l.split('d')
+                try:
+                    size, high = l.split('d')
+                except ValueError as  error:
+                    # This really feels wrong, there has to be a better way but i guess we'll be refactoring
+                    if (error.args[0] == "not enough values to unpack (expected 2, got 1)"):
+                        size = 1
+                        high = l.split('d')
+                    else:
+                        await ctx.send("Bad request, please use $d help.")
                 if (int(size) > 1) and (calculation):
-                    await ctx.send('Calculation not working with more one dice.')
+                    await ctx.send('Calculation with more than one dice'
+                                   'is not currently supported.')
                     return
                 number = self._random_de(size=size, high=high)
                 for n in number:
