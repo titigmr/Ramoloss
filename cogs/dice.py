@@ -1,13 +1,14 @@
-import discord
+import re
 from discord.ext import commands
 import numpy as np
-import re
+
 
 from cogs.utils import HelperCommand, TITLE_DICE, DESCRIPTION_COMMAND_DICE
 
 
 class Dice(commands.Cog, HelperCommand):
     def __init__(self, bot):
+        super().__init__()
         self.bot = bot
 
     def _check(self, args):
@@ -30,7 +31,7 @@ class Dice(commands.Cog, HelperCommand):
         return True
 
     @commands.command(name='d')
-    async def d(self, ctx, *args):
+    async def dice(self, ctx, *args):
         """Roll a random dice (use `$d help` for using examples)"""
         calculation = False
         verbose = True
@@ -53,8 +54,8 @@ class Dice(commands.Cog, HelperCommand):
             if 'd' in l:
                 try:
                     size, high = l.split('d')
-                except ValueError as  error:
-                    if (error.args[0] == "not enough values to unpack (expected 2, got 1)"):
+                except ValueError as error:
+                    if error.args[0] == "not enough values to unpack (expected 2, got 1)":
                         size = 1
                         high = l.split('d')
                     else:
@@ -86,9 +87,11 @@ class Dice(commands.Cog, HelperCommand):
         if len(f) == 1:
             await ctx.send(f'{str(f)}')
         else:
-            await ctx.send("Error in arguments. Make sure you are using the command correctly. For help use: $d help")
+            await ctx.send(("Error in arguments. Make sure you are using the command correctly"
+                            ". For help use: $d help"))
 
-    def _random_de(self, low=1, high=6, size=1):
+    @classmethod
+    def _random_de(cls, low=1, high=6, size=1):
         if isinstance(high, str):
             if '[' and ']' in high:
                 first = high.find('[')

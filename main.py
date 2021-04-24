@@ -1,8 +1,7 @@
-import discord
-from bot import Ramoloss
-import sys
 import json
 import os
+from bot import Ramoloss
+
 
 with open('config.json') as config_file:
     config = json.load(config_file)
