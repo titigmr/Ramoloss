@@ -30,10 +30,7 @@ class UFD(commands.Cog, HelperCommand, ParseArgs):
             return
 
         if command == 'list':
-            if len(args) == 0:
-                type_command = 'char'
-            else:
-                type_command = args[0]
+            type_command = self._select_subcommand(arguments=args)
 
             if type_command == 'char':
                 selection=None
@@ -119,6 +116,11 @@ class UFD(commands.Cog, HelperCommand, ParseArgs):
     async def ufd_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
             await ctx.send(error)
+
+    def _select_subcommand(self, arguments):
+        if len(args) == 0:
+            return 'char'
+        return args[0]
 
 def setup(bot):
     bot.add_cog(UFD(bot))
