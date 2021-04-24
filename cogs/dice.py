@@ -54,7 +54,6 @@ class Dice(commands.Cog, HelperCommand):
                 try:
                     size, high = l.split('d')
                 except ValueError as  error:
-                    # This really feels wrong, there has to be a better way but i guess we'll be refactoring
                     if (error.args[0] == "not enough values to unpack (expected 2, got 1)"):
                         size = 1
                         high = l.split('d')
