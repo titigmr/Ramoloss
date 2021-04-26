@@ -114,8 +114,8 @@ class UFD(commands.Cog, HelperCommand, ParseArgs):
         if isinstance(error, commands.CommandOnCooldown):
             await ctx.send(error)
 
-    @classmethod
-    def show_wrap_message(cls, list_to_out, title, wrap_at=1000):
+    @staticmethod
+    def show_wrap_message(list_to_out, title, wrap_at=1000):
         output = "\n".join(list_to_out)
         send_messages = TextWrapper(
             wrap_at, break_long_words=False, replace_whitespace=False
@@ -123,8 +123,8 @@ class UFD(commands.Cog, HelperCommand, ParseArgs):
 
         return [discord.Embed(title=title, description=m) for m in send_messages]
 
-    @classmethod
-    def _select_subcommand(cls, arguments: list):
+    @staticmethod
+    def _select_subcommand(arguments: list):
         if len(arguments) == 0:
             return "char"
         return arguments[0]

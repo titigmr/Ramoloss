@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from cogs.utils import EMOJI, HelperCommand, ParseArgs
+from cogs.utils import EMOJI, HelperCommand, ParseArgs, TITLE_POLL, DESCRIPTION_COMMAND_POLL
 
 
 class Poll(commands.Cog, HelperCommand, ParseArgs):
@@ -14,8 +14,8 @@ class Poll(commands.Cog, HelperCommand, ParseArgs):
             message_content = message.clean_content
             if message_content.find("{") == -1:
                 if 'help' in message_content:
-                    await ctx.send(embed=self.help(title=TITLE,
-                                    description_command=DESCRIPTION_COMMAND))
+                    await ctx.send(embed=self.help(title=TITLE_POLL,
+                                    description_command=DESCRIPTION_COMMAND_POLL))
                 else:
                     await message.add_reaction('✅')
                     await message.add_reaction('❌')
