@@ -1,6 +1,4 @@
-import discord
 from discord.ext import commands
-
 
 
 class Owner(commands.Cog):
@@ -13,8 +11,8 @@ class Owner(commands.Cog):
     async def load(self, ctx, *, cog: str):
         try:
             self.bot.load_extension(self.path + cog)
-        except Exception as e:
-            await ctx.send(f"**`ERROR: {e}`**")
+        except Exception as error:
+            await ctx.send(f"**`ERROR: {error}`**")
         else:
             await ctx.send("**`SUCCESS`**")
 
@@ -24,8 +22,8 @@ class Owner(commands.Cog):
         print(cog)
         try:
             self.bot.unload_extension(self.path + cog)
-        except Exception as e:
-            await ctx.send(f"**`ERROR: {e}`**")
+        except Exception as error:
+            await ctx.send(f"**`ERROR: {error}`**")
         else:
             await ctx.send("**`SUCCESS`**")
 
@@ -35,8 +33,8 @@ class Owner(commands.Cog):
         try:
             self.bot.unload_extension(self.path + cog)
             self.bot.load_extension(self.path + cog)
-        except Exception as e:
-            await ctx.send(f"**`ERROR: {e}`**")
+        except Exception as error:
+            await ctx.send(f"**`ERROR: {error}`**")
         else:
             await ctx.send("**`SUCCESS`**")
 
