@@ -90,8 +90,8 @@ class Dice(commands.Cog, HelperCommand):
             await ctx.send(("Error in arguments. Make sure you are using the command correctly"
                             ". For help use: $d help"))
 
-    @classmethod
-    def _random_de(cls, low=1, high=6, size=1):
+    @staticmethod
+    def _random_de(low=1, high=6, size=1):
         if isinstance(high, str):
             if '[' and ']' in high:
                 first = high.find('[')
