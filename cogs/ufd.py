@@ -34,19 +34,19 @@ class UFD(commands.Cog, HelperCommand, ParseArgs):
             return
 
         if command == "list":
-            type_command = self._select_subcommand(arguments=args)
+            subcommand = self._select_subcommand(arguments=args)
 
-            if type_command == "char":
+            if subcommand == "char":
                 all_embed_m = self.char_typecommand(arguments=args)
                 for embed_m in all_embed_m:
                     await ctx.send(embed=embed_m)
 
-            elif type_command == "moves":
+            elif subcommand == "moves":
                 all_embed_m = self.moves_typecommand()
                 for embed_m in all_embed_m:
                     await ctx.send(embed=embed_m)
 
-            elif type_command == "index":
+            elif subcommand == "index":
                 pass
 
             else:
