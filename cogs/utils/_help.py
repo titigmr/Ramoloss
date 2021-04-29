@@ -1,6 +1,7 @@
-import discord
 import json
-import os
+import discord
+
+
 
 with open('config.json') as f:
     config_arg = json.load(f)["command_prefix"]
@@ -47,6 +48,6 @@ class HelperCommand:
         pass
 
     def help(self, title, description_command):
-        e = discord.Embed(title=title,
+        embed_m = discord.Embed(title=title,
                           description=description_command)
-        return e
+        return embed_m

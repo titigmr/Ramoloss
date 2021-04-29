@@ -1,6 +1,4 @@
 
-
-
 class ParseArgs:
     def __init__(self):
         pass
@@ -18,8 +16,7 @@ class ParseArgs:
         if (first == 0 or last == -1):
             if len(options) < n_min:
                 return "Not using the command correctly"
-            else:
-                return options
+            return options
         options.append(message[first:last])
         message = message[last+1:]
         return self.find_options(message, options)

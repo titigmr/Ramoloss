@@ -1,4 +1,3 @@
-import discord
 from discord.ext import commands
 
 
@@ -16,6 +15,13 @@ class Settings(commands.Cog):
     async def set_prefix(self, ctx, *, new_prefix: str):
         self.bot.command_prefix = new_prefix
         await ctx.send(f'Prefix has been set to `{new_prefix}`.')
+
+    @set_prefix.error
+    async def pref_error(self, ctx, error):
+        if isinstance(error, commands.MissingPermissions):
+            await ctx.send(error)
+
+
 
 def setup(bot):
     bot.add_cog(Settings(bot))

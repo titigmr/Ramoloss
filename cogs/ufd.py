@@ -66,7 +66,8 @@ class UFD(commands.Cog, HelperCommand, ParseArgs):
                     try:
                         options = self.find_options(message=arguments, options=[])
                     except ValueError:
-                        return "Please make sure you are using the format '$ufd character [Move1] [Move2] [Move3]'"
+                        return ("Please make sure you are using the format"
+                                "'$ufd character [Move1] [Move2] [Move3]'")
                 else:
                     options = "all"
 
@@ -141,7 +142,7 @@ class UFD(commands.Cog, HelperCommand, ParseArgs):
 
     def moves_typecommand(self):
         list_moves = [f"**{ref}** ({move.title()})"
-                     for ref, move in REF_ATK.items()]
+                      for ref, move in REF_ATK.items()]
         list_e = self.show_wrap_message(
             list_to_out=list_moves,
             title="Liste des mouvements"
