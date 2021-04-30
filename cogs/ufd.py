@@ -51,8 +51,8 @@ class UFD(commands.Cog, HelperCommand, ParseArgs):
 
             else:
                 await ctx.channel.send((
-                    "Unrecognezied command: make sure you're choosing"
-                    "between {'char', 'moves', 'index'}"))
+                    "Unrecognized command: make sure you're choosing"
+                    "between 'char', 'moves', 'index'"))
                 return
 
         else:
@@ -125,7 +125,7 @@ class UFD(commands.Cog, HelperCommand, ParseArgs):
         return [discord.Embed(title=title, description=m) for m in send_messages]
 
     @staticmethod
-    def _select_subcommand(arguments: list):
+    def _select_subcommand(arguments):
         if len(arguments) == 0:
             return "char"
         return arguments[0]
