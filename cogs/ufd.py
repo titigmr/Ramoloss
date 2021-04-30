@@ -36,6 +36,7 @@ class UFD(commands.Cog, HelperCommand, ParseArgs):
         if command == "list":
             subcommand = self._select_subcommand(arguments=args)
 
+            # TODO: refactor this using match-case once 3.10 is out & stable
             if subcommand == "char":
                 all_embed_m = self.char_typecommand(arguments=args)
                 for embed_m in all_embed_m:
