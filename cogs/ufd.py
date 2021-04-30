@@ -36,6 +36,7 @@ class UFD(commands.Cog, HelperCommand, ParseArgs):
         if command == "list":
             subcommand = self._select_subcommand(arguments=args)
 
+            # TODO: refactor this using match-case once 3.10 is out & stable
             if subcommand == "char":
                 all_embed_m = self.char_typecommand(arguments=args)
                 for embed_m in all_embed_m:
@@ -51,8 +52,8 @@ class UFD(commands.Cog, HelperCommand, ParseArgs):
 
             else:
                 await ctx.channel.send((
-                    "Unrecognezied command: make sure you're choosing"
-                    "between {'char', 'moves', 'index'}"))
+                    "Unrecognized command: make sure you're choosing"
+                    "between 'char', 'moves', 'index'"))
                 return
 
         else:
@@ -125,7 +126,7 @@ class UFD(commands.Cog, HelperCommand, ParseArgs):
         return [discord.Embed(title=title, description=m) for m in send_messages]
 
     @staticmethod
-    def _select_subcommand(arguments: list):
+    def _select_subcommand(arguments):
         if len(arguments) == 0:
             return "char"
         return arguments[0]
