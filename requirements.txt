@@ -2,3 +2,7 @@ discord.py
 requests
 beautifulsoup4
 numpy
+opencv-python
+matplotlib
+pillow
+opencv-python
