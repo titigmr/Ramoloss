@@ -227,7 +227,7 @@ class DiceGenerator:
 
 
 class ColorError(Exception):
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
         super().__init__()
 
     def __str__(self):
