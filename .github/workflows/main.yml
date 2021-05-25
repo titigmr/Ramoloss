@@ -32,7 +32,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          plateforms: linux/arm/v7,linux/amd64
+          platforms: linux/arm/v7,linux/amd64
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/ramoloss:latest
