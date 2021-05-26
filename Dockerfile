@@ -5,7 +5,10 @@ RUN apt-get update \
     && apt-get install build-essential make gcc -y \
     && apt-get install dpkg-dev -y \ 
     && apt-get install libjpeg-dev -y \ 
+    && sudo apt-get install libatlas-base-dev
     && pip install --upgrade pip \
-    && pip install -r requirements.txt --extra-index-url https://www.piwheels.org/simple
+    && pip install -r requirements.txt --extra-index-url https://www.piwheels.org/simple \
+    && pip3 uninstall numpy  # remove previously installed version \
+    apt install python3-numpy
 
 CMD [ "python", "main.py"]
