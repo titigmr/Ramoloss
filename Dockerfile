@@ -9,6 +9,6 @@ RUN apt-get update \
     && pip install --upgrade pip \
     && pip install -r requirements.txt --extra-index-url https://www.piwheels.org/simple \
     && pip3 uninstall numpy  # remove previously installed version \
-    apt install python3-numpy
+    && apt install python3-numpy
 
 CMD [ "python", "main.py"]
