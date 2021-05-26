@@ -8,7 +8,7 @@ RUN apt-get update \
     && sudo apt-get install libatlas-base-dev
     && pip install --upgrade pip \
     && pip install -r requirements.txt --extra-index-url https://www.piwheels.org/simple \
-    && pip3 uninstall numpy  # remove previously installed version \
+    && pip uninstall numpy \
     && apt install python3-numpy
 
 CMD [ "python", "main.py"]
