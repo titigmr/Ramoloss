@@ -5,10 +5,7 @@ RUN apt-get update \
     && apt-get install build-essential make gcc -y \
     && apt-get install dpkg-dev -y \ 
     && apt-get install libjpeg-dev -y \ 
-    && pip install -r requirements.txt --extra-index-url https://www.piwheels.org/simple \
-    && pip install --no-cache-dir . \
-    && apt-get remove -y --purge make gcc build-essential \
-    && apt-get auto-remove -y \
-    && rm -rf /var/lib/apt/lists/* \
-    && find /usr/local/lib/python3.7 -name "*.pyc" -type f -delete
+    && pip install --upgrade pip \
+    && pip install -r requirements.txt --extra-index-url https://www.piwheels.org/simple
+
 CMD [ "python", "main.py"]
