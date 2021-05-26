@@ -38,6 +38,7 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/ramoloss:latest
-
-      - name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
+        
+      #- name: Run test
+      #  run: |
+      #    ci/test.sh
