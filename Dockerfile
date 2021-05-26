@@ -7,7 +7,6 @@ RUN apt-get update \
     && apt-get install libjpeg-dev -y \ 
     && pip install --upgrade pip \
     && pip install -r requirements.txt --extra-index-url https://www.piwheels.org/simple \
-    && pip uninstall numpy \
     && apt install python3-numpy
 
 CMD [ "python", "main.py"]
