@@ -1,5 +1,6 @@
-discord_bot:
-    container_name: ramoloss
-    build: .
+bot:
     environment:
       - DISCORD_TOKEN=${DISCORD_TOKEN}
+    container_name: ${APP_NAME}
+    build: .
+    image: ${APP_NAME}
