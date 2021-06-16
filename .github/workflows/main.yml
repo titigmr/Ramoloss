@@ -50,10 +50,9 @@ jobs:
           cache-to: type=local,dest=/tmp/.buildx-cache-new
 
       - name: Run test
-          run: |
-            ci/run-test.sh
-
-
+        run: |
+          ci/run-test.sh
+      
       - name: build with cache and push on registry if success
         if: ( success() && github.ref == 'refs/heads/main' )
         uses: docker/build-push-action@v2
@@ -66,7 +65,7 @@ jobs:
 
 
   # build on amd/x86 plateform and push to github registry
-  - build_amdx86:
+  build_amdx86:
       runs-on: ubuntu-latest
       steps:
       - name: Checkout
@@ -97,8 +96,8 @@ jobs:
           cache-to: type=local,dest=/tmp/.buildx-cache-new
 
       - name: Run test
-          run: |
-            ci/run-test.sh
+        run: |
+           ci/run-test.sh
 
       - name: build with cache and push if success
         if: ( success() && github.ref == 'refs/heads/main' )
