@@ -2,14 +2,18 @@ name: CI
 
 on:
   push:
+    branch:
+      - master
   pull_request:
     branch:
       - master
-
+  # action by user
   workflow_dispatch:
 
+
 jobs:
-  build:
+  # build on arm plateform and push to docker registry
+  build_arm:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -27,16 +31,80 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: Build and push
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Build on arm plateform
         uses: docker/build-push-action@v2
         with:
           context: .
           platforms: linux/arm/v7
-          # linux/amd64
           file: ./Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${APP}:latest
+          push: false
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new
 
       - name: Run test
           run: |
             ci/run-test.sh
+
+
+      - name: build with cache and push on registry if success
+        if: ( success() && github.ref == 'refs/heads/main' )
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          platforms: linux/arm/v7
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${APP}:latest
+
+
+  # build on amd/x86 plateform and push to github registry
+  - build_amdx86:
+      runs-on: ubuntu-latest
+      steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Login to ghcr
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_REGISTRY_TOKEN }}
+
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Build on x86/amd plateform
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new
+
+      - name: Run test
+          run: |
+            ci/run-test.sh
+
+      - name: build with cache and push if success
+        if: ( success() && github.ref == 'refs/heads/main' )
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/${APP}:latest
