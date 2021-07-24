@@ -1,6 +1,12 @@
-bot:
-    environment:
-      - DISCORD_TOKEN=${DISCORD_TOKEN}
-    container_name: ${APP_NAME}
-    build: .
-    image: ${APP_NAME}
+services:
+  bot:
+      environment:
+        - DISCORD_TOKEN=${DISCORD_TOKEN}
+      container_name: ${APP_NAME}
+      image: ${APP_NAME}
+      build:
+          context : .
+          args:
+            - ARCH
+          dockerfile: Dockerfile
+          target: $ARCH

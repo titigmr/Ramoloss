@@ -2,10 +2,10 @@ name: CI
 
 on:
   push:
-    branch:
+    branches:
       - master
   pull_request:
-    branch:
+    branches:
       - master
   # action by user
   workflow_dispatch:
@@ -15,6 +15,7 @@ jobs:
   # build on arm plateform and push to docker registry
   build_arm:
     runs-on: ubuntu-latest
+    environment: ${{ secret.DISCORD_TOKEN_DEV }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -27,17 +28,15 @@ jobs:
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
+        with:
+          platforms: linux/arm/v7
+
+      #- name: Build on arm plateform
+      #  run:
+      #    ci/run-build.sh
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
-
-      - name: Cache Docker layers
-        uses: actions/cache@v2
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
 
       - name: Build on arm plateform
         uses: docker/build-push-action@v2
@@ -52,7 +51,7 @@ jobs:
       - name: Run test
         run: |
           ci/run-test.sh
-      
+
       - name: build with cache and push on registry if success
         if: ( success() && github.ref == 'refs/heads/main' )
         uses: docker/build-push-action@v2
@@ -67,6 +66,7 @@ jobs:
   # build on amd/x86 plateform and push to github registry
   build_amdx86:
       runs-on: ubuntu-latest
+      environment: ${{ secret.DISCORD_TOKEN_DEV }}
       steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -77,14 +77,6 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Cache Docker layers
-        uses: actions/cache@v2
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
 
       - name: Build on x86/amd plateform
         uses: docker/build-push-action@v2
