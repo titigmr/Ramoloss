@@ -15,7 +15,6 @@ jobs:
   # build on arm plateform and push to docker registry
   build_arm:
     runs-on: ubuntu-latest
-    environment: ${{ secret.DISCORD_DEV_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -31,22 +30,11 @@ jobs:
         with:
           platforms: linux/arm/v7
 
-      #- name: Build on arm plateform
-      #  run:
-      #    ci/run-build.sh
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
-      - name: Build on arm plateform
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          platforms: linux/arm/v7
-          file: ./Dockerfile
-          push: false
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new
+      - name: Build and test on arm plateform with
+        env:
+          DISCORD_TOKEN: ${{ secrets.DISCORD_DEV_TOKEN }}
+        run:
+          ls /bin/qemu*
 
       - name: Run test
         run: |
@@ -54,6 +42,8 @@ jobs:
 
       - name: build with cache and push on registry if success
         if: ( success() && github.ref == 'refs/heads/main' )
+        env:
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
         uses: docker/build-push-action@v2
         with:
           context: .
@@ -66,7 +56,6 @@ jobs:
   # build on amd/x86 plateform and push to github registry
   build_amdx86:
       runs-on: ubuntu-latest
-      environment: ${{ secret.DISCORD_DEV_TOKEN }}
       steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -78,21 +67,16 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build on x86/amd plateform
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./Dockerfile
-          push: false
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new
-
-      - name: Run test
+      - name: Build and test on x86/amd plateform with dev token
+        env:
+          DISCORD_TOKEN: ${{ secrets.DISCORD_DEV_TOKEN }}
         run: |
            ci/run-test.sh
 
-      - name: build with cache and push if success
+      - name: build and push if success on x86/amd plateform with prod token
         if: ( success() && github.ref == 'refs/heads/main' )
+        env:
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
         uses: docker/build-push-action@v2
         with:
           context: .
