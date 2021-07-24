@@ -9,4 +9,4 @@ services:
           args:
             - ARCH
           dockerfile: Dockerfile
-          target: $ARCH
+          target: ${ARCH}
