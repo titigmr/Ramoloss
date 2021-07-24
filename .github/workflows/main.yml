@@ -34,7 +34,7 @@ jobs:
         env:
           DISCORD_TOKEN: ${{ secrets.DISCORD_DEV_TOKEN }}
         run:
-          ls /bin/qemu*
+          find / linux/arm/v7
 
       - name: Run test
         run: |
