@@ -41,8 +41,8 @@ jobs:
       - name: Build and test on ${{ matrix.ARCH }} plateform
         env:
           DISCORD_TOKEN: ${{ secrets.DISCORD_DEV_TOKEN }}
-        run:
-          ci/run-build.sh
+        run: |
+          sudo ci/run-build.sh
 
       - name: build with cache and push on registry if success
         if: ( success() && github.ref == 'refs/heads/main' )
