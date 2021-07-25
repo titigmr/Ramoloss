@@ -20,7 +20,7 @@ jobs:
           - ARCH: armv7l
             registry: ghcr.io
             username: github.actor
-            password: secrets.GITHUB_TOKEN
+            password: GITHUB_TOKEN
           - ARCH: x86_64
             registry: docker.io
             username: DOCKERHUB_USERNAME
