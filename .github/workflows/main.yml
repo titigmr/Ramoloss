@@ -42,7 +42,7 @@ jobs:
         env:
           DISCORD_TOKEN: ${{ secrets.DISCORD_DEV_TOKEN }}
         run: |
-          sudo ci/run-build.sh
+          bash ci/run-build.sh
 
       - name: build with cache and push on registry if success
         if: ( success() && github.ref == 'refs/heads/main' )
