@@ -12,74 +12,39 @@ on:
 
 
 jobs:
-  # build on arm plateform and push to docker registry
-  build_arm:
+  build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - ARCH: armv7l
+            registry: ghcr.io
+            username: ${{ github.actor }}
+            password: ${{ secrets.GITHUB_TOKEN }}
+          - ARCH: x86_64
+            registry: docker.io
+            username: ${{ secrets.DOCKERHUB_USERNAME }}
+            password: ${{ secrets.DOCKERHUB_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Login to DockerHub
+      - name: Login to ${{ matrix.registry }}
+        id: ghcr
         uses: docker/login-action@v1
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          registry: ghcr.io
+          username: ${{ matrix.username }}
+          password: ${{ matrix.password }}
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-        with:
-          platforms: linux/arm/v7
-
-      - name: Build and test on arm plateform with
+      - name: Build and test on ${{ matrix.ARCH }} plateform
         env:
           DISCORD_TOKEN: ${{ secrets.DISCORD_DEV_TOKEN }}
         run:
-          find / linux/arm/v7
-
-      - name: Run test
-        run: |
           ci/run-test.sh
 
       - name: build with cache and push on registry if success
         if: ( success() && github.ref == 'refs/heads/main' )
-        env:
-          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          platforms: linux/arm/v7
-          file: ./Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${APP}:latest
-
-
-  # build on amd/x86 plateform and push to github registry
-  build_amdx86:
-      runs-on: ubuntu-latest
-      steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Login to ghcr
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and test on x86/amd plateform with dev token
-        env:
-          DISCORD_TOKEN: ${{ secrets.DISCORD_DEV_TOKEN }}
         run: |
-           ci/run-test.sh
 
-      - name: build and push if success on x86/amd plateform with prod token
-        if: ( success() && github.ref == 'refs/heads/main' )
-        env:
-          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: ghcr.io/${{ github.repository_owner }}/${APP}:latest
+          #ghcr.io/${{ github.actor }}/${APP}:latest

@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
   bot:
       environment:
@@ -6,7 +8,4 @@ services:
       image: ${APP_NAME}
       build:
           context : .
-          args:
-            - ARCH
-          dockerfile: Dockerfile
-          target: ${ARCH}
+          dockerfile: Dockerfile.${ARCH}
