@@ -35,7 +35,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ secrets[matrix.username] }}
-          password: ${{ secret[matrix.password] }}
+          password: ${{ secrets[matrix.password] }}
 
       - name: Build and test on ${{ matrix.ARCH }} plateform
         env:
