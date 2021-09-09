@@ -3,7 +3,6 @@ SHELL = /bin/bash
 NAME ?= ramoloss
 ARCH ?= $(shell uname -m)
 VERSION := $(shell git describe --abbrev=0)
-LATEST := "latest"
 
 # docker-compose
 DC  := $(shell type -p docker-compose)
@@ -12,20 +11,21 @@ DC_RUN_ARGS := -d --no-build
 DC_FILE := docker-compose.yml
 
 # docker
-#DOCKER_REGISTRY ?= docker.io
-#GITHUB_REGISTRY ?= ghcr.io
+#DOCKER_REGISTRY := docker.io
+#GITHUB_REGISTRY := ghcr.io
 REPOSITORY ?= ramoloss
 
 # image
-IMAGE_REGISTRY_bot=${REGISTRY}/${REGISTRY_USERNAME}/${NAME}-bot:${VERSION}
 IMAGE_bot=${NAME}-bot:${VERSION}
+IMAGE_REGISTRY_bot=${REGISTRY}/${REGISTRY_USERNAME}/${IMAGE_bot}
+
 
 export
 
 
 all:
-	@echo "Usage: NAME=ramoloss make build | up | down \
-	| test | check | push | pull "
+	@echo "Usage: NAME=ramoloss make deploy | build | \
+	up | down | test | check | push | pull "
 
 
 # check var or config
@@ -49,6 +49,9 @@ build-%:
 
 # up all or one service
 up: check-config-quiet
+	@if [ -z "${DISCORD_TOKEN}" ] ; \
+	then echo "ERROR: DISCORD_TOKEN \
+	not defined" ; exit 1 ; fi
 	${DC} -f ${DC_FILE} up ${DC_RUN_ARGS}
 
 up-%: check-config-quiet
@@ -71,13 +74,9 @@ test-%:
 
 push: push-bot
 
-
 push-%:
 	@if [ -z "${REGISTRY}" -a -z "${REGISTRY_USERNAME}" ] ; \
 	then echo "ERROR: REGISTRY and REGISTRY_USERNAME \
 	not defined" ; exit 1 ; fi
 	docker tag ${IMAGE_$*} ${IMAGE_REGISTRY_$*}
 	docker push ${IMAGE_REGISTRY_$*}
-
-
-push-latest:

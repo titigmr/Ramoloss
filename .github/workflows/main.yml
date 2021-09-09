@@ -66,4 +66,4 @@ jobs:
           REGISTRY: ${{ matrix.registry }}
           REGISTRY_USERNAME: ${{ secrets[matrix.username] }}
         run: |
-          bash ci/push.sh
+          make VERSION=latest push
