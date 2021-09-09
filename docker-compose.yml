@@ -1,11 +1,10 @@
-version: "3.9"
-
+version: '3.9'
 services:
   bot:
-      environment:
-        - DISCORD_TOKEN=${DISCORD_TOKEN}
-      container_name: ${APP_NAME}
-      image: ${APP_NAME}
-      build:
-          context : .
-          dockerfile: Dockerfile.${ARCH}
+    environment:
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+    container_name: ${NAME}-bot
+    image: ${NAME}-bot:${VERSION}
+    build:
+        context : .
+        dockerfile: Dockerfile.${ARCH}
