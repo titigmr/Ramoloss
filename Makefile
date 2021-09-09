@@ -80,3 +80,8 @@ push-%:
 	not defined" ; exit 1 ; fi
 	docker tag ${IMAGE_$*} ${IMAGE_REGISTRY_$*}
 	docker push ${IMAGE_REGISTRY_$*}
+
+pull: pull-bot
+
+pull-%:
+	docker pull
