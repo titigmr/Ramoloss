@@ -32,6 +32,8 @@ jobs:
       - name: Prepare before build
         run: |
           sudo apt-get update -y
+          export VERSION=$(git describe --tags --abbrev=0)
+          echo ${VERSION}
 
       - name: Checkout branch
         uses: actions/checkout@v2
