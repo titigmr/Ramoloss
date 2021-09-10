@@ -45,6 +45,7 @@ build: check-config-quiet
 
 build-%:
 	@echo "# start $*"
+        echo ${VERSION}
 	${DC} -f ${DC_FILE} build ${DC_BUILD_ARGS} $*
 
 # up all or one service
