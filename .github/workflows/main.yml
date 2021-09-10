@@ -35,7 +35,8 @@ jobs:
 
       - name: Checkout branch
         uses: actions/checkout@v2
-        run: git fetch --tags
+        with:
+          fetch-depth: 0
 
       - name: Login to ${{ matrix.registry }}
         uses: docker/login-action@v1
