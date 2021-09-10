@@ -1,0 +1,8 @@
+*.md
+.git
+*.tar
+tmp
+.vscode
+*.ipynb
+__pycache__
+docker_save
