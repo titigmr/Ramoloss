@@ -41,7 +41,7 @@ check-config-quiet:
 
 # build all or one service
 build: check-config-quiet
-        echo ${VERSION}
+	echo ${VERSION}
 	${DC} -f ${DC_FILE} build ${DC_BUILD_ARGS}
 
 build-%:
