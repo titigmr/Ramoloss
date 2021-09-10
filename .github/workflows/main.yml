@@ -32,7 +32,6 @@ jobs:
       - name: Prepare before build
         run: |
           sudo apt-get update -y
-          sudo apt-get install curl git-all -y
 
       - name: Checkout branch
         uses: actions/checkout@v2
