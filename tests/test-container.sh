@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+APP_NAME=${NAME}-bot
 active_container=$(docker ps --filter "name=$APP_NAME" -q)
 
 if [ -z "${active_container}" ]; then
