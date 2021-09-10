@@ -1,6 +1,7 @@
 name: Release
 
 on:
+  push:
   workflow_dispatch:
     inputs:
       type_version:
@@ -74,4 +75,4 @@ jobs:
       - name: create tag version
         run: |
           git tag ${{ steps.version.outputs.next-version }}
-          git push
+          git push origin --tags
