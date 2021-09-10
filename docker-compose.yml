@@ -4,7 +4,7 @@ services:
     environment:
       - DISCORD_TOKEN=${DISCORD_TOKEN}
     container_name: ${NAME}-bot
-    image: ${IMAGE_bot}
+    image: ${NAME}-bot:${VERSION}
     build:
         context : .
         dockerfile: Dockerfile.${ARCH}
