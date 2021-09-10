@@ -1,16 +1,12 @@
-name: CI
+name: Release
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-  release:
-    types: [published]
-  # action by user
   workflow_dispatch:
+    inputs:
+      type_version:
+          description: 'Type version'
+          required: true
+          default: 'feature'
 
 
 jobs:
@@ -51,27 +47,31 @@ jobs:
           DISCORD_TOKEN: ${{ secrets.DISCORD_DEV_TOKEN }}
         run: |
           bash ci/build.sh
-
-      - name: push on ${{ matrix.registry }} if success on main branch
-        if: ( success() && github.ref == 'refs/heads/main' )
-        env:
-          ARCH: ${{ matrix.ARCH }}
-          REGISTRY: ${{ matrix.registry }}
-          REGISTRY_USERNAME: ${{ secrets[matrix.username] }}
-        run: |
-          bash ci/push.sh
-
-      - name: get new release version
-        id: version
-        uses: christian-draeger/increment-semantic-version@1.0.2
-        with:
-          current-version: ${VERSION}
-          version-fragment: 'feature'
       - name: push latest version on release
-        if: ( success() && github.event_name == 'release' )
         env:
           ARCH: ${{ matrix.ARCH }}
           REGISTRY: ${{ matrix.registry }}
           REGISTRY_USERNAME: ${{ secrets[matrix.username] }}
         run: |
           make VERSION=latest push
+
+  release:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: increment version
+        id: version
+        uses: christian-draeger/increment-semantic-version@1.0.2
+        with:
+          current-version: ${VERSION}
+          version-fragment: ${{ github.event.inputs.type_version }}
+
+      - name: create tag version
+        run: |
+          git tag ${{ steps.version.outputs.next-version }}
+          git push
