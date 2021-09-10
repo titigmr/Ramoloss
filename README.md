@@ -1,5 +1,6 @@
 # Ramoloss
 
+![CI_badge](https://github.com/titigmr/ramoloss/actions/workflows/main.yml/badge.svg)
 
 ## Installation sur un serveur Discord
 
