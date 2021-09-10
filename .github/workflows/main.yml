@@ -61,7 +61,7 @@ jobs:
           bash ci/push.sh
 
       - name: push latest version on release
-        if: ( success() && github.event == 'release' )
+        if: ( success() && github.event_name == 'release' )
         env:
           ARCH: ${{ matrix.ARCH }}
           REGISTRY: ${{ matrix.registry }}
