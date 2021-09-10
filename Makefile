@@ -41,11 +41,11 @@ check-config-quiet:
 
 # build all or one service
 build: check-config-quiet
+        echo ${VERSION}
 	${DC} -f ${DC_FILE} build ${DC_BUILD_ARGS}
 
 build-%:
 	@echo "# start $*"
-        echo ${VERSION}
 	${DC} -f ${DC_FILE} build ${DC_BUILD_ARGS} $*
 
 # up all or one service
