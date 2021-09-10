@@ -1,7 +1,6 @@
 name: Release
 
 on:
-  push:
   workflow_dispatch:
     inputs:
       type_version:
@@ -47,7 +46,8 @@ jobs:
         env:
           DISCORD_TOKEN: ${{ secrets.DISCORD_DEV_TOKEN }}
         run: |
-          bash ci/build.sh
+          make VERSION=latest build
+
       - name: push latest version on release
         env:
           ARCH: ${{ matrix.ARCH }}
