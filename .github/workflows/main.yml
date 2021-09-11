@@ -60,11 +60,8 @@ jobs:
         run: |
           bash ci/push.sh
 
-      - name: push latest version on release
-        if: ( success() && github.event_name == 'release' )
+      - name: Release Drafter
+        if: ( success() && startsWith(github.ref,'refs/heads/main') )
+        uses: release-drafter/release-drafter@v5.15.0
         env:
-          ARCH: ${{ matrix.ARCH }}
-          REGISTRY: ${{ matrix.registry }}
-          REGISTRY_USERNAME: ${{ secrets[matrix.username] }}
-        run: |
-          make VERSION=latest push
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
