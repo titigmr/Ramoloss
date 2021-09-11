@@ -4,13 +4,14 @@ on:
   workflow_dispatch:
     inputs:
       type_version:
-          description: 'Type version'
+          description: 'Type version [ major | feature | bug ]'
           required: true
           default: 'feature'
 
 
 jobs:
   build:
+    needs: release
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -58,16 +59,17 @@ jobs:
 
   release:
     runs-on: ubuntu-latest
-    needs: build
     steps:
       - name: Checkout branch
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      
+
       - name: get version
-        run: export VERSION=$(git describe --abbrev=0)  
-      
+        run: |
+          export VERSION=$(git describe --abbrev=0)
+          echo ${VERSION}
+
       - name: increment version
         id: version
         uses: christian-draeger/increment-semantic-version@1.0.2
