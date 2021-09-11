@@ -65,10 +65,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: get version
+      - name: get number version
         run: |
-          export VERSION=$(git describe --abbrev=0)
-          echo ${VERSION}
+          VERSION=$(git describe --abbrev=0)
+          export VERSION=${VERSION:1}
 
       - name: increment version
         id: version
@@ -79,5 +79,5 @@ jobs:
 
       - name: new version tag
         run: |
-          git tag ${{ steps.version.outputs.next-version }}
+          git tag v${{ steps.version.outputs.next-version }}
           git push origin --tags
