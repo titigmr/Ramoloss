@@ -66,18 +66,17 @@ jobs:
           fetch-depth: 0
 
       - name: get number version
+        id: version_number
         run: |
           semantic_version=$(git describe --abbrev=0)
           export VERSION=${semantic_version:1}
-          echo ${VERSION}
+          echo "::set-output name=version::${VERSION}"
 
       - name: increment version
-        env:
-          VERSION: ${VERSION}
         id: version
         uses: christian-draeger/increment-semantic-version@1.0.2
         with:
-          current-version: ${VERSION}
+          current-version: ${{ steps.version_number.outputs.version }}
           version-fragment: ${{ github.event.inputs.type_version }}
 
       - name: new version tag
