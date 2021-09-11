@@ -67,8 +67,9 @@ jobs:
 
       - name: get number version
         run: |
-          VERSION=$(git describe --abbrev=0)
-          export VERSION=${VERSION:1}
+          semantic_version=$(git describe --abbrev=0)
+          export VERSION=${semantic_version:1}
+          echo ${VERSION}
 
       - name: increment version
         id: version
