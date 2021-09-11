@@ -7,8 +7,7 @@ on:
   pull_request:
     branches:
       - main
-  release:
-  # action by user
+
   workflow_dispatch:
 
 
@@ -61,7 +60,7 @@ jobs:
           bash ci/push.sh
 
       - name: Release Drafter
-        if: ( success() && startsWith(github.ref,'refs/heads/main') )
+        if: ( success() && github.ref == 'refs/heads/main' )
         uses: release-drafter/release-drafter@v5.15.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
