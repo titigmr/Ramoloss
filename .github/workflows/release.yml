@@ -72,6 +72,8 @@ jobs:
           echo ${VERSION}
 
       - name: increment version
+        env:
+          VERSION: ${VERSION}
         id: version
         uses: christian-draeger/increment-semantic-version@1.0.2
         with:
