@@ -64,7 +64,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
+      
+      - name: get version
+        run: export VERSION=$(git describe --abbrev=0)  
+      
       - name: increment version
         id: version
         uses: christian-draeger/increment-semantic-version@1.0.2
