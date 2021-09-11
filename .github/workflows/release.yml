@@ -3,10 +3,17 @@ name: Release
 on:
   release:
     types: [published]
+  workflow_dispatch:
+    inputs:
+      type_version:
+          description: 'Type version [ major | feature | bug ]'
+          required: true
+          default: 'feature'
 
 
 jobs:
   build:
+    needs: release
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -51,3 +58,28 @@ jobs:
           REGISTRY_USERNAME: ${{ secrets[matrix.username] }}
         run: |
           make VERSION=latest push
+
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: get version
+        run: |
+          export VERSION=$(git describe --abbrev=0)
+          echo ${VERSION}
+
+      - name: increment version
+        id: version
+        uses: christian-draeger/increment-semantic-version@1.0.2
+        with:
+          current-version: ${VERSION}
+          version-fragment: ${{ github.event.inputs.type_version }}
+
+      - name: new version tag
+        run: |
+          git tag ${{ steps.version.outputs.next-version }}
+          git push origin --tags
