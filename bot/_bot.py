@@ -13,7 +13,7 @@ class Ramoloss(Bot):
             self.load_extension(extension)
 
     async def on_ready(self):
-        print(f'Logged in as {self.user} with extensions: {" ".join(self.extensions).replace("cogs.", "")}')
+        print(f'Logged in as {self.user} with extensions: \n{" ".join(self.extensions).replace("cogs.", "")}')
 
-    def run(self):
+    def run(self, *args, **kwargs):
         super().run(self.discord_token, reconnect=True)

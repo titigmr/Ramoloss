@@ -37,12 +37,12 @@ class UFD(commands.Cog, HelperCommand, ParseArgs):
             subcommand = self._select_subcommand(arguments=args)
 
             # TODO: refactor this using match-case once 3.10 is out & stable
-            if subcommand == "char":
+            if subcommand in ("char", 'perso'):
                 all_embed_m = self.char_typecommand(arguments=args)
                 for embed_m in all_embed_m:
                     await ctx.send(embed=embed_m)
 
-            elif subcommand == "moves":
+            elif subcommand in ("moves", 'move'):
                 all_embed_m = self.moves_typecommand()
                 for embed_m in all_embed_m:
                     await ctx.send(embed=embed_m)
@@ -53,7 +53,7 @@ class UFD(commands.Cog, HelperCommand, ParseArgs):
             else:
                 await ctx.channel.send((
                     "Unrecognized command: make sure you're choosing"
-                    "between 'char', 'moves', 'index'"))
+                    "between 'char', 'move', 'index'"))
                 return
 
         else:

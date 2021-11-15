@@ -11,8 +11,8 @@ DC_RUN_ARGS := -d --no-build
 DC_FILE := docker-compose.yml
 
 # docker
-#DOCKER_REGISTRY := docker.io
-#GITHUB_REGISTRY := ghcr.io
+#REGISTRY ?= docker.io
+REGISTRY ?= ghcr.io
 REPOSITORY ?= ramoloss
 
 # image
@@ -85,4 +85,7 @@ push-%:
 pull: pull-bot
 
 pull-%:
-	docker pull
+	@if [ -n "${REGISTRY_TOKEN}" -a -n "${REGISTRY_LOGIN}" ] ;\
+	then echo ${REGISTRY_TOKEN} | docker login ${REGISTRY} \
+	--username ${REGISTRY_LOGIN} --password-stdin ; fi
+	docker pull ${REGISTRY}/${REGISTRY_LOGIN}/${NAME}-$*:latest
