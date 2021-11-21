@@ -30,59 +30,56 @@ DEFAULT_EXCLUDE_OVERALL_STATS = ["Stats", "Initial Dash", 'Walk Speed',
 
 
 class UltimateFD:
-    def __init__(self, character, moves,
-                 args_stats=None,
-                 get_hitbox=False,
-                 exclude_stats=['movename',
+    def __init__(self,
+                character,
+                moves,
+                args_stats=None,
+                get_hitbox=False,
+                exclude_stats=['movename',
                                 'whichhitbox', 'notes'],
-                 exclude_moves=['dodge']):
+                exclude_moves=['dodge']):
 
         self.char = character
         self.out = exclude_moves
         self.exclude_stats = exclude_stats
-        self.args_stats = args_stats
         self.image = get_hitbox
         self.url = "https://ultimateframedata.com/"
         self.stats = {}
+        self.all_char = self.get_all_characters(self.url)
         self.avalaible_stats = {}
-        self.REF_ATK = REF_ATK
-
-        if self.args_stats is None:
-            self.args_stats = DEFAULT_STATS
-
+        self.args_stats = DEFAULT_STATS if args_stats is None else args_stats
         if character is None:
             return
 
-        if moves == 'all':
-            moves = list(REF_ATK.keys())
+        moves = list(REF_ATK.keys()) if moves == 'all' else moves
 
         for move in moves:
-            self._st_move = self._get_character_moves(
-                name=character, move=move)
+            self._st_move = self.get_character_moves(name=character,
+                                                      move=move)
 
-            stats = self._get_stats_move(
-                self._st_move, self.image, *self.args_stats)
+            stats = self.get_stats_move(self._st_move,
+                                         self.image,
+                                        *self.args_stats)
             self.stats.update(stats)
 
-        if len(self.stats) == 0:
-            raise KeyError(
-                f'No moves found. Moves must be in: {list(REF_ATK.keys())}')
+        if not self.stats:
+            list_moves = list(REF_ATK.keys())
+            raise KeyError(f'No moves found. Moves must be in: {list_moves}')
 
 
     def _get_soup(self, url):
         r = requests.get(url)
         if r.status_code != 200:
-            all_char = self._get_all_characters(self.url)
             raise ValueError(
-                f'Choose a valid character in: {list(all_char.keys())}')
+                f'Choose a valid character in: {list(self.all_char.keys())}')
         return BeautifulSoup(r.content, 'lxml')
 
-    def _get_stats_move(self, stats_move, image, *kwargs):
+    def get_stats_move(self, stats_move, image, *kwargs):
         out_move = {}
         for m, s in stats_move.items():
             out_stats = {}
-            available_stats = self._get_available_stats(
-                st_move=s, exclude_stats=self.exclude_stats)
+            available_stats = self._get_available_stats(st_move=s,
+                                                        exclude_stats=self.exclude_stats)
             self.avalaible_stats[m] = available_stats
 
             if self.args_stats == 'all':
@@ -102,7 +99,8 @@ class UltimateFD:
 
             for arg in kwargs:
                 if arg in available_stats:
-                    val = self._format_stats(soup=s, class_name=arg)
+                    val = self._format_stats(soup=s,
+                                            class_name=arg)
                     out_stats[arg] = val
             out_move[m] = out_stats
         return out_move
@@ -111,8 +109,9 @@ class UltimateFD:
         soup = soup.find(class_=class_name)
         if soup is not None:
             return soup.text.strip()
+        return None
 
-    def _get_character_moves(self, name, move):
+    def get_character_moves(self, name, move):
         url_char = self.url + name
         soup = self._get_soup(url_char)
 
@@ -123,14 +122,14 @@ class UltimateFD:
         final_dict_move = {}
         for m_k, m_s in data_move.items():
             for out_word in self.out:
-                if self._check_move(ref_atk=self.REF_ATK, move=move, m_k=m_k, out=out_word):
+                if self._check_move(ref_atk=REF_ATK, move=move, m_k=m_k, out=out_word):
                     final_dict_move[m_k] = m_s
         return final_dict_move
 
     def _check_move(self, ref_atk, move, m_k, out):
         if move in ref_atk:
-            if (ref_atk[move] in m_k):
-                if (out not in m_k):
+            if ref_atk[move] in m_k:
+                if out not in m_k:
                     return True
         return False
 
@@ -145,13 +144,14 @@ class UltimateFD:
                         stats_list.add(stats)
         return stats_list
 
-    def _get_all_characters(self, url):
+    def get_all_characters(self, url):
         soup = self._get_soup(url)
         characters = {}
-        for i in soup.find_all('a'):
-            href = i["href"]
-            if ('.php' in href) and ('stats' not in href):
-                name = href[1:].replace('.php', '')
+
+        for balise in soup.find_all('a'):
+            href = balise["href"]
+            if (href.startswith('/')) and ('stats' not in href):
+                name = href.replace('/', '')
                 url_c = url + href
                 characters[name] = url_c
         return characters
