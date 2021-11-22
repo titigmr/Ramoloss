@@ -2,7 +2,6 @@ FROM python:3.7-buster as x86_64
 ENV DISCORD_TOKEN=${DISCORD_TOKEN}
 WORKDIR /ramoloss
 COPY . .
-RUN apt-get update && pip install --no-cache-dir \
-    -r requirements.txt
+RUN apt-get update && pip install --no-cache-dir -e bot/
 CMD [ "python", "main.py"]
 
