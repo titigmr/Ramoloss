@@ -25,21 +25,22 @@ REF_ATK = {"ftilt": 'forward tilt',
 DEFAULT_STATS = ["startup", "advantage", "activeframes",
                  "totalframes", "basedamage", "shieldstun"]
 
-DEFAULT_EXCLUDE_OVERALL_STATS = ["Stats", "Initial Dash", 'Walk Speed',
-                                 "SH / FH / SHFF / FHFF Frames",
+DEFAULT_EXCLUDE_OVERALL_STATS = ['Stats', 'Initial Dash',
+                                 'Walk Speed',
+                                 'SH / FH / SHFF / FHFF Frames',
                                  'Shield Drop', 'Jump Squat']
 
 
 class UltimateFD:
     def __init__(self,
-                 character: str=None,
+                 character: str = None,
                  moves: str = None,
                  args_stats=None,
-                 get_hitbox: bool =False,
-                 exclude_stats: list =['movename',
-                                      'whichhitbox',
-                                      'notes'],
-                 exclude_moves: list =['dodge']):
+                 get_hitbox: bool = False,
+                 exclude_stats: list = ['movename',
+                                        'whichhitbox',
+                                        'notes'],
+                 exclude_moves: list = ['dodge']):
 
         self.char = character
         self.exclude_moves = exclude_moves
@@ -58,7 +59,7 @@ class UltimateFD:
 
         for move in moves:
             st_move = self.get_character_moves(data=data_move,
-                                                move=move)
+                                               move=move)
 
             stats = self.get_stats_move(st_move,
                                         get_hitbox,
@@ -67,8 +68,7 @@ class UltimateFD:
 
         if not self.stats:
             list_moves = list(REF_ATK.keys())
-            raise KeyError(f'No moves found. Moves must be in: {list_moves}')
-
+            raise ValueError(f"No moves found. Moves must be in: {list_moves}")
 
     def _get_soup(self, url):
         """
@@ -79,7 +79,6 @@ class UltimateFD:
             raise ValueError(
                 f'Choose a valid character in: {list(self.all_char.keys())}')
         return BeautifulSoup(response.content, 'lxml')
-
 
     def get_stats_move(self, stats_move, image, *kwargs):
         out_move = {}
@@ -112,12 +111,12 @@ class UltimateFD:
             out_move[move] = out_stats
         return out_move
 
-    def _format_stats(self, soup, class_name):
+    @staticmethod
+    def _format_stats(soup, class_name):
         soup = soup.find(class_=class_name)
         if soup is not None:
             return soup.text.strip()
         return None
-
 
     def get_character_data(self, name):
         """
@@ -131,7 +130,6 @@ class UltimateFD:
                      mv for mv in soup.find_all(class_='movecontainer')
                      if mv.find(class_='movename') is not None}
         return data_move
-
 
     def get_character_moves(self, data: dict, move: str):
         """

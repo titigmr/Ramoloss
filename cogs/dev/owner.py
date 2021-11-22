@@ -1,5 +1,4 @@
 from discord.ext import commands
-from discord.ext.commands.core import command, has_permissions
 
 
 class Owner(commands.Cog):
@@ -8,7 +7,7 @@ class Owner(commands.Cog):
         self.path = 'cogs.'
 
     @commands.command(name="load", hidden=True)
-    @commands.has_permissions(admin=True)
+    @commands.has_permissions()
     @commands.is_owner()
     async def load(self, ctx, *, cog: str = None):
         cog = self.parse_args(cog)
@@ -17,7 +16,7 @@ class Owner(commands.Cog):
         await ctx.send("**`SUCCESS`**")
 
     @commands.command(name="unload", hidden=True)
-    @commands.has_permissions(admin=True)
+    @commands.has_permissions()
     @commands.is_owner()
     async def unload(self, ctx, *, cog: str = None):
         cog = self.parse_args(cog)
@@ -26,7 +25,7 @@ class Owner(commands.Cog):
         await ctx.send("**`SUCCESS`**")
 
     @commands.command(name="reload", hidden=True)
-    @commands.has_permissions(admin=True)
+    @commands.has_permissions()
     @commands.is_owner()
     async def reload(self, ctx, *, cog: str = None):
         cog = self.parse_args(cog)

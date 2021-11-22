@@ -3,7 +3,7 @@ import discord
 
 
 
-with open('config.json') as f:
+with open('config.json', 'r', encoding='utf-8') as f:
     config_arg = json.load(f)["command_prefix"]
 
 
