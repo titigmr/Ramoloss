@@ -8,22 +8,26 @@ class Owner(commands.Cog):
 
     @commands.command(name="load", hidden=True)
     @commands.is_owner()
-    async def load(self, ctx, *, cog: str):
+    async def load(self, ctx, *, cog: str = None):
+
         self.bot.load_extension(self.path + cog)
         await ctx.send("**`SUCCESS`**")
+
 
     @commands.command(name="unload", hidden=True)
     @commands.is_owner()
-    async def unload(self, ctx, *, cog: str):
+    async def unload(self, ctx, *, cog: str = None):
         self.bot.unload_extension(self.path + cog)
         await ctx.send("**`SUCCESS`**")
 
+
     @commands.command(name="reload", hidden=True)
     @commands.is_owner()
-    async def reload(self, ctx, *, cog: str):
+    async def reload(self, ctx, *, cog: str = None):
         self.bot.unload_extension(self.path + cog)
         self.bot.load_extension(self.path + cog)
         await ctx.send("**`SUCCESS`**")
+
 
     @reload.error
     @load.error

@@ -20,7 +20,6 @@ class UFD(commands.Cog, HelperCommand):
         self.bot = bot
         self.url = ufd.url
         self.get_all_characters = ufd.get_all_characters
-        self.ref_atk = ufd.REF_ATK
         self.n_args = None
         self.command = None
         self.args = None
@@ -28,7 +27,10 @@ class UFD(commands.Cog, HelperCommand):
     @commands.cooldown(rate=5, per=30, type=commands.BucketType.user)
     @commands.command(name="ufd")
     async def ufd(self, ctx, command=None, *args):
-
+        """
+        Command UFD for get information about moves for a character in
+        SSBU i.e "ufd wario nair fair"
+        """
         self.n_args = len(args)
         self.command = command
         self.args = iter(args)
@@ -72,6 +74,7 @@ class UFD(commands.Cog, HelperCommand):
                                       moves=self.args,
                                       get_hitbox=True,
                                       args_stats=None)
+
                 except (ValueError, KeyError) as error:
                     await ctx.channel.send(f"{error}")
                     return

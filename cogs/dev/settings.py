@@ -16,6 +16,7 @@ class Settings(commands.Cog):
         self.bot.command_prefix = new_prefix
         await ctx.send(f'Prefix has been set to `{new_prefix}`.')
 
+
     @set_prefix.error
     async def pref_error(self, ctx, error):
         if isinstance(error, commands.MissingPermissions):

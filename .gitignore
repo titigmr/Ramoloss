@@ -10,7 +10,7 @@
 
 # import
 __pycache__
-
+*.egg-info
 # folders
 _img_dices
 
@@ -19,3 +19,4 @@ _img_dices
 
 # env
 .env
+

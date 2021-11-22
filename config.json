@@ -2,11 +2,11 @@
     "description": "",
     "command_prefix": "!",
     "extensions": [
-        "cogs.dice",
-        "cogs.john",
-        "cogs.poll",
-        "cogs.ufd",
-        "cogs.owner",
-        "cogs.settings"
+        "user.dice",
+        "user.john",
+        "user.poll",
+        "user.ufd",
+        "dev.owner",
+        "dev.settings"
     ]
 }

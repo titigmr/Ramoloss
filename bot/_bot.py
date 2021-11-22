@@ -10,7 +10,7 @@ class Ramoloss(Bot):
             description=self.config["description"]
         )
         for extension in self.config["extensions"]:
-            self.load_extension(extension)
+            self.load_extension('cogs.' + extension)
 
     async def on_ready(self):
         print(f'Logged in as {self.user} with extensions: \n{" ".join(self.extensions).replace("cogs.", "")}')
