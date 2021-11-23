@@ -1,3 +1,8 @@
+import json
+import pytest
+import discord
+import discord.ext.test as dpytest
+from bot import Ramoloss
 from bot.cogs.utils import UltimateFD, REF_ATK
 
 
@@ -27,3 +32,23 @@ class TestUFD:
         assert any(REF_ATK["nair"] in key for key in move)
 
 
+with open('config.json', 'r', encoding='utf-8') as config_file:
+    config = json.load(config_file)
+
+
+@pytest.fixture
+def bot_instance(event_loop):
+    intents = discord.Intents.default()
+    intents.members = True
+    bot_ramoloss = Ramoloss(config=config,
+                            token=None,
+                            loop=event_loop,
+                            intents=intents)
+    dpytest.configure(bot_ramoloss)
+    return bot_ramoloss
+
+
+@pytest.mark.asyncio
+async def test_ping(bot_instance):
+    await dpytest.message("!ufd wario nair")
+    assert dpytest.verify().message().contains().content("Wario")
