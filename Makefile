@@ -71,8 +71,10 @@ test-%:
 	@echo "# test $*"
 	bash tests/test-$*.sh
 
-# push
+pytest:
+	python -m pytest tests/
 
+# push
 push: push-bot
 
 push-%:

@@ -58,7 +58,7 @@ class UFD(commands.Cog, HelperCommand):
                             await ctx.channel.send(embed=embed_m)
 
                     case 'index':
-                        pass
+                        raise NotImplementedError
 
                     case _:
                         raise ValueError((
