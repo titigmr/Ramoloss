@@ -1,4 +1,4 @@
-FROM arm32v7/python:3.7-buster as arch_armv7l
+FROM arm32v7/python:3.10-buster as arch_armv7l
 ENV DISCORD_TOKEN=${DISCORD_TOKEN}
 WORKDIR /ramoloss
 COPY . .
