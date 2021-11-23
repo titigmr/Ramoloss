@@ -34,7 +34,7 @@ DEFAULT_EXCLUDE_OVERALL_STATS = ['Stats', 'Initial Dash',
 class UltimateFD:
     def __init__(self,
                  character: str = None,
-                 moves: str | list = None,
+                 moves=None,
                  args_stats=None,
                  get_hitbox: bool = False,
                  exclude_stats: list = ['movename',
@@ -54,14 +54,14 @@ class UltimateFD:
         if character is None:
             return
 
-        moves = moves if isinstance(moves, list) else [moves]
         moves = list(REF_ATK.keys()) if moves == 'all' else moves
+        moves = [moves] if isinstance(moves, str) else moves
+
         data_move = self.get_character_data(name=character)
 
         for move in moves:
             st_move = self.get_character_moves(data=data_move,
                                                move=move)
-
             stats = self.get_stats_move(st_move,
                                         get_hitbox,
                                         *self.args_stats)

@@ -85,7 +85,7 @@ class UFD(commands.Cog, HelperCommand):
     @ufd.error
     async def error(self, ctx, error):
         if isinstance(error, (commands.CommandOnCooldown, CommandInvokeError)):
-            if isinstance(CommandInvokeError):
+            if isinstance(error, CommandInvokeError):
                 error = error.__cause__
             await ctx.send(f'```ERROR: {error.__cause__}```')
         print(error)
