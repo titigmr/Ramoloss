@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
-
-REQUIRED_PACKAGES = open('requirements.txt').readlines()
+with open('requirements.txt', 'r', encoding='utf-8') as f:
+    REQUIRED_PACKAGES = f.readlines()
 
 setup(name="bot",
       install_requires=REQUIRED_PACKAGES,
