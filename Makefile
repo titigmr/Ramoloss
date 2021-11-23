@@ -72,7 +72,8 @@ test-%:
 	bash tests/test-$*.sh
 
 pytest:
-	python -m pytest tests/
+	docker -it exec bot python -m pytest tests/
+	exit
 
 # push
 push: push-bot
