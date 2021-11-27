@@ -5,5 +5,7 @@ COPY . .
 RUN apt-get update && apt-get install libatlas-base-dev -y \
     && pip install --no-cache-dir -e bot/ \
     -i https://www.piwheels.org/simple
+
+RUN pytest tests/
 CMD [ "python", "main.py"]
 
