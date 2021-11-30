@@ -22,3 +22,5 @@ _img_dices
 
 # test
 .pytest_cache
+*.html
+.env

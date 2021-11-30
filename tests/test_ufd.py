@@ -1,5 +1,5 @@
 import json
-import time
+import requests
 import pytest
 import discord
 import discord.ext.test as dpytest
@@ -14,7 +14,7 @@ with open('config.json', 'r', encoding='utf-8') as config_file:
 @pytest.fixture
 def bot_instance(event_loop):
     intents = discord.Intents.default()
-    intents.members = True
+    setattr(intents, 'members', True)
     bot_ramoloss = Ramoloss(config=config,
                             token=None,
                             loop=event_loop,
@@ -23,25 +23,43 @@ def bot_instance(event_loop):
     return bot_ramoloss
 
 
+class MockResponse:
+    def __init__(self):
+        self.status_code = 200
+        self.content = MockResponse.open_file('wario')
+
+    @staticmethod
+    def open_file(filename):
+        with open(f'save/{filename}.html', 'r', encoding='utf-8') as file:
+            file_content = str(file.readlines())
+        return file_content
+
+    def get(self):
+        return
+
+def mock_get(*args, **kwargs):
+        return MockResponse()
+
+
 class TestUFD:
-    def test_char(self):
+    def test_char(self, monkeypatch):
         """
         Test list of character is valid
         """
+        monkeypatch.setattr(requests, 'get', mock_get)
         ufd = UltimateFD()
-        char = list(ufd.all_char.keys())
+        char = list(ufd.get_all_characters(ufd.url).keys())
         assert 'wario' in char
         assert 'sora' in char
         assert 'donkey_kong' in char
         assert 'http' not in char
-        time.sleep(1)
 
-    def test_move(self):
+    def test_move(self, monkeypatch):
+        monkeypatch.setattr(requests, "get", mock_get)
         ufd = UltimateFD(character='wario',
                          moves='fair')
         move = ufd.stats
         assert any(REF_ATK["fair"] in key for key in move)
-        time.sleep(1)
 
     def test_list_moves(self):
         ufd = UltimateFD(character='wario',
@@ -49,7 +67,6 @@ class TestUFD:
         move = ufd.stats
         assert any(REF_ATK["ub"] in key for key in move)
         assert any(REF_ATK["nair"] in key for key in move)
-        time.sleep(1)
 
 
 class TestDiscordUFD:
@@ -60,7 +77,6 @@ class TestDiscordUFD:
         assert 'dair' in description
         assert 'fsmash' in description
         assert 'nb' in description
-        time.sleep(1)
 
     @pytest.mark.asyncio
     async def test_char_command(self, bot_instance):
@@ -69,7 +85,6 @@ class TestDiscordUFD:
         assert 'wario' in description
         assert 'sora' in description
         assert 'captain_falcon' in description
-        time.sleep(1)
 
     @pytest.mark.asyncio
     async def test_wario_command_title(self, bot_instance):
@@ -77,11 +92,9 @@ class TestDiscordUFD:
         title = dpytest.get_embed().title
         assert 'Wario' in title
         assert 'Up B' in title
-        time.sleep(1)
 
     async def test_wario_command_stats(self, bot_instance):
         await dpytest.message("!ufd wario ub")
         fields = dpytest.get_embed().fields
         assert 'Startup' in fields
         assert 'Shieldstun' in fields
-        time.sleep(1)

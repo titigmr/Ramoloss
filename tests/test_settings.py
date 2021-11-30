@@ -13,7 +13,7 @@ with open('config.json', 'r', encoding='utf-8') as config_file:
 @pytest.fixture
 def bot_instance(event_loop):
     intents = discord.Intents.default()
-    intents.members = True
+    setattr(intents, 'members', True)
     bot_ramoloss = Ramoloss(config=CONFIG,
                             token=None,
                             loop=event_loop,

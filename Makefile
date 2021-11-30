@@ -1,3 +1,6 @@
+# include env var
+include .env
+
 # repository
 SHELL = /bin/bash
 NAME ?= ramoloss
@@ -21,7 +24,6 @@ IMAGE_REGISTRY_bot=${REGISTRY}/${REGISTRY_USERNAME}/${IMAGE_bot}
 
 
 export
-
 
 all:
 	@echo "Usage: NAME=ramoloss make deploy | build | \
@@ -88,3 +90,7 @@ pull-%:
 	then echo ${REGISTRY_TOKEN} | docker login ${REGISTRY} \
 	--username ${REGISTRY_LOGIN} --password-stdin ; fi
 	docker pull ${REGISTRY}/${REGISTRY_LOGIN}/${NAME}-$*:latest
+	docker tag ${REGISTRY}/${REGISTRY_LOGIN}/${NAME}-$*:latest ${NAME}-$*:latest
+
+deploy: pull up
+	

@@ -47,7 +47,6 @@ class UltimateFD:
         self.exclude_stats = exclude_stats
         self.url = "https://ultimateframedata.com/"
         self.stats = {}
-        self.all_char = self.get_all_characters(self.url)
         self.avalaible_stats = {}
         self.args_stats = DEFAULT_STATS if args_stats is None else args_stats
 
@@ -77,8 +76,9 @@ class UltimateFD:
         """
         response = requests.get(url)
         if response.status_code != 200:
+            all_char = self.get_all_characters(self.url)
             raise ValueError(
-                f'Choose a valid character in: {list(self.all_char.keys())}')
+                f'Choose a valid character in: {list(all_char.keys())}')
         return BeautifulSoup(response.content, 'lxml')
 
     def get_stats_move(self, stats_move, image, *kwargs):
