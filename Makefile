@@ -1,6 +1,3 @@
-# include env var
-include .env
-
 # repository
 SHELL = /bin/bash
 NAME ?= ramoloss
@@ -93,4 +90,4 @@ pull-%:
 	docker tag ${REGISTRY}/${REGISTRY_LOGIN}/${NAME}-$*:latest ${NAME}-$*:latest
 
 deploy: pull up
-	
+
