@@ -12,7 +12,8 @@ jobs:
         DISCORD_TOKEN: ${{ secrets.DISCORD_DEV_TOKEN }}
         DOCKERHUB_TOKEN : ${{ secrets.DOCKERHUB_TOKEN }}
         DOCKERHUB_USERNAME : ${{ secrets.DOCKERHUB_USERNAME }}
-
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        NAME_OWNER: ${{ secrets.NAME_OWNER }}
   push:
     needs: build
     runs-on: ubuntu-latest
