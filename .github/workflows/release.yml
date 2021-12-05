@@ -15,7 +15,7 @@ jobs:
           fetch-depth: 0
 
       - name: Build
-        uses: ./.github/workflows/main.yml@main
+        uses: ./.github/workflows/main.yml
         env:
           VERSION: latest
 
