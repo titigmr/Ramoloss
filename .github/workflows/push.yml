@@ -1,0 +1,20 @@
+
+name: Push on dev branch
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: build and test
+        uses: ./github/workflows/main.yml@main
+
+      - name: Release Drafter
+        if: ( success() && github.ref == 'refs/heads/dev' )
+        uses: release-drafter/release-drafter@v5.15.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

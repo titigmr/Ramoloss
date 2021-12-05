@@ -1,53 +1,26 @@
 name: Release
 
 on:
-  release:
-    types: [published]
-
+  push:
+    branches:
+     - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        include:
-          - ARCH: armv7l
-            registry: ghcr.io
-            username: NAME_OWNER
-            password: GITHUB_TOKEN
-          - ARCH: x86_64
-            registry: docker.io
-            username: DOCKERHUB_USERNAME
-            password: DOCKERHUB_TOKEN
-    name: build ${{ matrix.ARCH }}
-
     steps:
-      - name: Prepare before build
-        run: |
-          sudo apt-get update -y
+    - name: Build
+      uses: ./.github/workflows/main.yml@main
+      env:
+        VERSION: latest
 
-      - name: Checkout branch
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-
-      - name: Login to ${{ matrix.registry }}
-        uses: docker/login-action@v1
-        with:
-          registry: ${{ matrix.registry }}
-          username: ${{ secrets[matrix.username] }}
-          password: ${{ secrets[matrix.password] }}
-
-      - name: Build and test on ${{ matrix.ARCH }} plateform
+  release:
+    name: Publish Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish release
+        uses: StuYarrow/publish-release@v1
         env:
-          DISCORD_TOKEN: ${{ secrets.DISCORD_DEV_TOKEN }}
-        run: |
-          make VERSION=latest build
-
-      - name: push latest version on release
-        env:
-          ARCH: ${{ matrix.ARCH }}
-          REGISTRY: ${{ matrix.registry }}
-          REGISTRY_USERNAME: ${{ secrets[matrix.username] }}
-        run: |
-          make VERSION=latest push
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          id: ${{ steps.create_release.outputs.id }}
