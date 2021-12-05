@@ -1,23 +1,12 @@
 name: Release
 
 on:
-<<<<<<< HEAD
   push:
     branches:
      - main
-=======
-  workflow_dispatch:
-    inputs:
-      type_version:
-          description: 'Type version [ major | feature | bug ]'
-          required: true
-          default: 'feature'
-
->>>>>>> 8779935a4306839bd5474ac93dbb9f05c568f72d
 
 jobs:
   build:
-    needs: release
     runs-on: ubuntu-latest
     steps:
     - name: Build
@@ -34,28 +23,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-<<<<<<< HEAD
           id: ${{ steps.create_release.outputs.id }}
-
-=======
-          fetch-depth: 0
-
-      - name: get number version
-        id: version_number
-        run: |
-          semantic_version=$(git describe --abbrev=0)
-          export VERSION=${semantic_version:1}
-          echo "::set-output name=version::${VERSION}"
-
-      - name: increment version
-        id: version
-        uses: christian-draeger/increment-semantic-version@1.0.2
-        with:
-          current-version: ${{ steps.version_number.outputs.version }}
-          version-fragment: ${{ github.event.inputs.type_version }}
-
-      - name: new version tag
-        run: |
-          git tag v${{ steps.version.outputs.next-version }}
-          git push origin --tags
->>>>>>> 8779935a4306839bd5474ac93dbb9f05c568f72d
