@@ -9,7 +9,10 @@ on:
         required: true
       DISCORD_TOKEN:
         required: true
-
+      GITHUB_TOKEN:
+        required: true
+      NAME_OWNER:
+        required: true
 
   pull_request:
     branches:
