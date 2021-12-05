@@ -9,15 +9,25 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Build
-      uses: ./.github/workflows/main.yml@main
-      env:
-        VERSION: latest
+      - name: Checkout branch
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Build
+        uses: ./.github/workflows/main.yml@main
+        env:
+          VERSION: latest
 
   release:
     name: Publish Release
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout branch
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
       - name: Publish release
         uses: StuYarrow/publish-release@v1
         env:

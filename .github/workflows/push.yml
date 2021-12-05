@@ -9,7 +9,12 @@ jobs:
   push:
     runs-on: ubuntu-latest
     steps:
-      - name: build and test
+      - name: Checkout branch
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Build and test
         uses: ./github/workflows/main.yml@main
 
       - name: Release Drafter
