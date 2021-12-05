@@ -1,18 +1,11 @@
 name: CI
 
 on:
-  push:
-    branches:
-      - main
+  workflow_call:
   pull_request:
     branches:
       - main
-  release:
-    types: [published]
-
-  # action by user
-  workflow_dispatch:
-
+      - dev
 
 jobs:
   build:
@@ -54,7 +47,7 @@ jobs:
           bash ci/build.sh
 
       - name: push on ${{ matrix.registry }} if success on main branch
-        if: ( success() && github.ref == 'refs/heads/main' )
+        if: ( success() && github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev')
         env:
           ARCH: ${{ matrix.ARCH }}
           REGISTRY: ${{ matrix.registry }}
@@ -62,8 +55,3 @@ jobs:
         run: |
           bash ci/push.sh
 
-      - name: Release Drafter
-        if: ( success() && github.ref == 'refs/heads/main' )
-        uses: release-drafter/release-drafter@v5.15.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
