@@ -5,9 +5,8 @@ on:
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-      NAME_OWNER: ${{ secrets.NAME_OWNER }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       DISCORD_TOKEN: ${{ secrets.DISCORD_DEV_TOKEN }}
+
   pull_request:
     branches:
       - main

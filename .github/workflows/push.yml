@@ -8,6 +8,10 @@ on:
 jobs:
   build:
       uses: titigmr/ramoloss/.github/workflows/main.yml@dev
+      secrets:
+        DISCORD_TOKEN: ${{ secrets.DISCORD_DEV_TOKEN }}
+        DOCKERHUB_TOKEN : ${{ secrets.DOCKERHUB_TOKEN }}
+        DOCKERHUB_USERNAME : ${{ secrets.DOCKERHUB_USERNAME }}
 
   push:
     needs: build
