@@ -11,10 +11,10 @@ categories:
       - 'bug'
   - title: '📖 Documentation'
     labels:
-      - 'doc'
+      - 'documentation'
 
 autolabeler:
-  - label: 'doc'
+  - label: 'documentation'
     files:
       - '*.md'
     branch:
@@ -22,7 +22,7 @@ autolabeler:
   - label: 'bug'
     branch:
       - '/fix\/.+'
-  - label: 'enh'
+  - label: 'feature'
     branch:
       - '/feat\/.+/'
 
