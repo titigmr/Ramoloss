@@ -10,6 +10,7 @@ jobs:
       uses: titigmr/ramoloss/.github/workflows/main.yml@dev
 
   push:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout branch
