@@ -15,7 +15,7 @@ jobs:
           fetch-depth: 0
 
       - name: Build and test
-        uses: ./.github/workflows/main.yml
+        uses: ./.github/action/main@dev
 
       - name: Release Drafter
         if: ( success() && github.ref == 'refs/heads/dev' )
