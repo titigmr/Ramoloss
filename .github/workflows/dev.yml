@@ -1,5 +1,5 @@
 
-name: Push on dev branch
+name: Developpment
 on:
   push:
     branches:
@@ -9,11 +9,12 @@ jobs:
   build:
       uses: titigmr/ramoloss/.github/workflows/main.yml@dev
       secrets:
-        DISCORD_TOKEN: ${{ secrets.DISCORD_DEV_TOKEN }}
+        DISCORD_DEV_TOKEN: ${{ secrets.DISCORD_DEV_TOKEN }}
         DOCKERHUB_TOKEN : ${{ secrets.DOCKERHUB_TOKEN }}
         DOCKERHUB_USERNAME : ${{ secrets.DOCKERHUB_USERNAME }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         NAME_OWNER: ${{ secrets.NAME_OWNER }}
+
   push:
     needs: build
     runs-on: ubuntu-latest

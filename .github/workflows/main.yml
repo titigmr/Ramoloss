@@ -1,4 +1,4 @@
-name: CI
+name: Continious integration
 
 on:
   workflow_call:
@@ -7,12 +7,16 @@ on:
         required: true
       DOCKERHUB_TOKEN:
         required: true
-      DISCORD_TOKEN:
+      DISCORD_DEV_TOKEN:
         required: true
       GITHUB_TOKEN:
         required: true
       NAME_OWNER:
         required: true
+    input:
+        VERSION:
+          required: false
+          type: string
 
   pull_request:
     branches:

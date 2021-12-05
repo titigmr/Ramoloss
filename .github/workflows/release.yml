@@ -1,25 +1,35 @@
 name: Release
 
 on:
-  push:
-    branches:
-     - main
+  workflow_dispatch:
 
 jobs:
-  build:
+  integrate:
+    name: Merge into main branch
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout branch
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+    - name: Merge development
+      uses: devmasx/merge-branch@master
+      with:
+        type: now
+        from_branch: dev
+        target_branch: main
+        github_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build
-        uses: ./.github/workflows/main.yml
-        env:
-          VERSION: latest
+  build:
+      needs: integrate
+      uses: titigmr/ramoloss/.github/workflows/main.yml@dev
+      secrets:
+        DISCORD_DEV_TOKEN: ${{ secrets.DISCORD_DEV_TOKEN }}
+        DOCKERHUB_TOKEN : ${{ secrets.DOCKERHUB_TOKEN }}
+        DOCKERHUB_USERNAME : ${{ secrets.DOCKERHUB_USERNAME }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        NAME_OWNER: ${{ secrets.NAME_OWNER }}
+      with:
+        VERSION: latest
 
   release:
+    needs: build
     name: Publish Release
     runs-on: ubuntu-latest
     steps:
