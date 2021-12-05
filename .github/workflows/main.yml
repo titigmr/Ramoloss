@@ -13,7 +13,7 @@ on:
         required: true
       NAME_OWNER:
         required: true
-    input:
+    inputs:
         VERSION:
           required: false
           type: string
