@@ -6,6 +6,9 @@ on:
       - dev
 
 jobs:
+  build:
+      uses: titigmr/ramoloss/.github/workflows/main.yml@dev
+
   push:
     runs-on: ubuntu-latest
     steps:
@@ -13,9 +16,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
-      - name: Build and test
-        uses: titigmr/ramoloss/.github/workflows/main.yml@dev
 
       - name: Release Drafter
         if: ( success() && github.ref == 'refs/heads/dev' )
