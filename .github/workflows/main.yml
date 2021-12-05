@@ -3,9 +3,13 @@ name: CI
 on:
   workflow_call:
     secrets:
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-      DISCORD_TOKEN: ${{ secrets.DISCORD_DEV_TOKEN }}
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_TOKEN:
+        required: true
+      DISCORD_TOKEN:
+        required: true
+
 
   pull_request:
     branches:
