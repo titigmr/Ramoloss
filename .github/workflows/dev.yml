@@ -3,11 +3,11 @@ name: Developpment
 on:
   push:
     branches:
-      - dev
+      - main
 
 jobs:
   build:
-      uses: titigmr/ramoloss/.github/workflows/main.yml@dev
+      uses: titigmr/ramoloss/.github/workflows/main.yml@main
       secrets:
         DISCORD_DEV_TOKEN: ${{ secrets.DISCORD_DEV_TOKEN }}
         DOCKERHUB_TOKEN : ${{ secrets.DOCKERHUB_TOKEN }}
@@ -15,7 +15,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         NAME_OWNER: ${{ secrets.NAME_OWNER }}
 
-  push:
+  draft:
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -25,7 +25,7 @@ jobs:
           fetch-depth: 0
 
       - name: Release Drafter
-        if: ( success() && github.ref == 'refs/heads/dev' )
+        if: ( success() && github.ref == 'refs/heads/main' )
         uses: release-drafter/release-drafter@v5.15.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

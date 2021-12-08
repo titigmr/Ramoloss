@@ -21,7 +21,6 @@ on:
   pull_request:
     branches:
       - main
-      - dev
 
 jobs:
   build:
@@ -58,6 +57,7 @@ jobs:
 
       - name: Build and test on ${{ matrix.ARCH }} plateform
         env:
+          ARCH: ${{ matrix.ARCH }}
           DISCORD_TOKEN: ${{ secrets.DISCORD_DEV_TOKEN }}
         run: |
           bash ci/build.sh
@@ -65,7 +65,6 @@ jobs:
       - name: push on ${{ matrix.registry }} if success on main branch
         if: ( success() && github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev')
         env:
-          ARCH: ${{ matrix.ARCH }}
           REGISTRY: ${{ matrix.registry }}
           REGISTRY_USERNAME: ${{ secrets[matrix.username] }}
         run: |

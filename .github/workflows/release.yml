@@ -1,24 +1,13 @@
 name: Release
 
 on:
-  workflow_dispatch:
+  release:
+    types:
+      - published
 
 jobs:
-  integrate:
-    name: Merge into main branch
-    runs-on: ubuntu-latest
-    steps:
-    - name: Merge development
-      uses: devmasx/merge-branch@master
-      with:
-        type: now
-        from_branch: dev
-        target_branch: main
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-
   build:
-      needs: integrate
-      uses: titigmr/ramoloss/.github/workflows/main.yml@dev
+      uses: titigmr/ramoloss/.github/workflows/main.yml@main
       secrets:
         DISCORD_DEV_TOKEN: ${{ secrets.DISCORD_DEV_TOKEN }}
         DOCKERHUB_TOKEN : ${{ secrets.DOCKERHUB_TOKEN }}
@@ -30,7 +19,7 @@ jobs:
 
   release:
     needs: build
-    name: Publish Release
+    name: Create release branch
     runs-on: ubuntu-latest
     steps:
       - name: Checkout branch
@@ -38,9 +27,24 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Set output current version
+        id: version
+        run: |
+          echo "::set-output name=version::$(make check-var-VERSION)"
+
       - name: Publish release
-        uses: StuYarrow/publish-release@v1
+        uses: peterjgrainger/action-create-branch@v2.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          id: ${{ steps.create_release.outputs.id }}
+          branch: 'release-${{ steps.version.outputs.version }}'
+
+  deploy:
+    needs: build
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
