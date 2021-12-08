@@ -8,3 +8,4 @@ services:
     build:
         context : .
         dockerfile: Dockerfile.${ARCH}
+    platform: ${ARCH}
