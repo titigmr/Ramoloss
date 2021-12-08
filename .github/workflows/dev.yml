@@ -1,0 +1,31 @@
+name: Developpment
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+      uses: titigmr/ramoloss/.github/workflows/main.yml@main
+      secrets:
+        DISCORD_DEV_TOKEN: ${{ secrets.DISCORD_DEV_TOKEN }}
+        DOCKERHUB_TOKEN : ${{ secrets.DOCKERHUB_TOKEN }}
+        DOCKERHUB_USERNAME : ${{ secrets.DOCKERHUB_USERNAME }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        NAME_OWNER: ${{ secrets.NAME_OWNER }}
+
+  draft:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Release Drafter
+        if: ( success() && github.ref == 'refs/heads/main' )
+        uses: release-drafter/release-drafter@v5.15.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

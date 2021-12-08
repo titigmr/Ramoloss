@@ -1,16 +1,34 @@
-name-template: 'v$RESOLVED_VERSION'
+
+name-template: 'Ramoloss v$RESOLVED_VERSION'
 tag-template: 'v$RESOLVED_VERSION'
+
 categories:
-  - title: '🚀 Features'
+  - title: '🚀 Fonctionnalités'
     labels:
       - 'feature'
-      - 'enhancement'
-  - title: '🐛 Bug Fixes'
+  - title: '🔧 Bug'
     labels:
-      - 'fix'
       - 'bug'
+  - title: '📖 Documentation'
+    labels:
+      - 'documentation'
+
+autolabeler:
+  - label: 'documentation'
+    files:
+      - '*.md'
+    branch:
+      - '/docs\/.+'
+  - label: 'bug'
+    branch:
+      - '/fix\/.+'
+  - label: 'feature'
+    branch:
+      - '/feat\/.+/'
+
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
 change-title-escapes: '\<*_&'
+
 version-resolver:
   major:
     labels:
@@ -22,7 +40,9 @@ version-resolver:
     labels:
       - 'patch'
   default: patch
+
 template: |
   ## Changements
 
   $CHANGES
+

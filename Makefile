@@ -2,7 +2,7 @@
 SHELL = /bin/bash
 NAME ?= ramoloss
 ARCH ?= $(shell uname -m)
-VERSION := $(shell git describe --abbrev=0)
+VERSION ?= $(shell git describe --tag --abbrev=0)
 
 # docker-compose
 DC  := $(shell type -p docker-compose)
