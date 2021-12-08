@@ -1,4 +1,4 @@
-name: Continious integration
+name: Continious integration (CI)
 
 on:
   workflow_call:
@@ -63,7 +63,7 @@ jobs:
           bash ci/build.sh
 
       - name: push on ${{ matrix.registry }} if success on main branch
-        if: ( success() && github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev')
+        if: ( success() && github.ref == 'refs/heads/main')
         env:
           REGISTRY: ${{ matrix.registry }}
           REGISTRY_USERNAME: ${{ secrets[matrix.username] }}
