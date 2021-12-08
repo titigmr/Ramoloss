@@ -3,6 +3,13 @@ ENV DISCORD_TOKEN=${DISCORD_TOKEN}
 WORKDIR /ramoloss
 COPY . .
 RUN apt-get update && apt-get install libatlas-base-dev -y \
+<<<<<<< HEAD
+    && pip install --no-cache-dir -e bot/ \
+    -i https://www.piwheels.org/simple
+
+RUN pytest tests/
+=======
     && pip install --no-cache-dir -r requirements.txt
+>>>>>>> 2e73db2c69a28863c50d9d08c1ab95b8ee9ed139
 CMD [ "python", "main.py"]
 

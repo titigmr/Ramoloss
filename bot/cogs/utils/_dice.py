@@ -19,9 +19,15 @@ class DiceGenerator:
     """
     Dice Image Generator
     """
-    def __init__(self, pt1=(30, 70), pt2=(70, 30),
-                 thinkness=5, shape=(100, 100, 3),
-                 xy=(50, 52), crop=(200, 200), directory='_img_dices'):
+
+    def __init__(self,
+                 pt1=(30, 70),
+                 pt2=(70, 30),
+                 thinkness=5,
+                 shape=(100, 100, 3),
+                 xy=(50, 52),
+                 crop=(200, 200),
+                 directory='_img_dices'):
         """
         Usage example:
         TODO
@@ -34,10 +40,10 @@ class DiceGenerator:
         self.crop = crop
         self.directory = self.get_path(directory)
 
-
     def create_lauch_dice(self, inputs_dice: list, colors='green', line_return: int = 3, save=True):
         """
-        Draw a dice or multiple dices side by side with a value number and a color.
+        Draw a dice or multiple dices side by side with
+        a value number and a color.
 
         Params:
         ------
@@ -68,9 +74,9 @@ class DiceGenerator:
                 list_img = []
 
             img = self.create_image_dice(value=i,
-                                    size=50,
-                                    color=c,
-                                    border=1, save=False)
+                                         size=50,
+                                         color=c,
+                                         border=1, save=False)
             list_img.append(img)
             if n == last:
                 line_img = self.create_side_by_side(

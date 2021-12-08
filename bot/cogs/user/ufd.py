@@ -1,6 +1,7 @@
 from textwrap import TextWrapper
 import discord
 from discord.ext import commands
+from discord.ext.commands.errors import CommandInvokeError
 
 from cogs.utils import (
     UltimateFD,
@@ -20,7 +21,6 @@ class UFD(commands.Cog, HelperCommand):
         self.bot = bot
         self.url = ufd.url
         self.get_all_characters = ufd.get_all_characters
-        self.ref_atk = ufd.REF_ATK
         self.n_args = None
         self.command = None
         self.args = None
@@ -28,7 +28,10 @@ class UFD(commands.Cog, HelperCommand):
     @commands.cooldown(rate=5, per=30, type=commands.BucketType.user)
     @commands.command(name="ufd")
     async def ufd(self, ctx, command=None, *args):
-
+        """
+        Command UFD for get information about moves for a character in
+        SSBU i.e "ufd wario nair fair"
+        """
         self.n_args = len(args)
         self.command = command
         self.args = iter(args)
@@ -55,26 +58,22 @@ class UFD(commands.Cog, HelperCommand):
                             await ctx.channel.send(embed=embed_m)
 
                     case 'index':
-                        pass
+                        raise NotImplementedError
 
                     case _:
-                        await ctx.channel.send((
+                        raise ValueError((
                             "Unrecognized command: make sure you're choosing "
                             "between 'char', 'move', 'index'"))
-                        return
 
             case _:
                 if not self.n_args:
-                    await ctx.channel.send('Must choice a move in "ufd list moves"')
+                    raise ValueError('Must choice a move. Availables moves with "ufd list moves"')
 
-                try:
-                    char = UltimateFD(character=command,
-                                      moves=self.args,
-                                      get_hitbox=True,
-                                      args_stats=None)
-                except (ValueError, KeyError) as error:
-                    await ctx.channel.send(f"{error}")
-                    return
+                char = UltimateFD(character=command,
+                                    moves=self.args,
+                                    get_hitbox=True,
+                                    args_stats=None)
+
 
                 for move, statistics in char.stats.items():
                     embed, hitbox = self.create_stats(move=move, statistics=statistics)
@@ -82,6 +81,14 @@ class UFD(commands.Cog, HelperCommand):
 
                     if hitbox is not None:
                         await ctx.channel.send(hitbox)
+
+    @ufd.error
+    async def error(self, ctx, error):
+        if isinstance(error, (commands.CommandOnCooldown, CommandInvokeError)):
+            if isinstance(error, CommandInvokeError):
+                error = error.__cause__
+            await ctx.send(f'```ERROR: {error.__cause__}```')
+        print(error)
 
 
     def show_list(self, selection):
@@ -94,15 +101,8 @@ class UFD(commands.Cog, HelperCommand):
         return names
 
 
-    @ufd.error
-    async def ufd_error(self, ctx, error):
-        if isinstance(error, commands.CommandOnCooldown):
-            await ctx.send(error)
-        else:
-            print(error)
-
-
-    def show_wrap_message(self, list_to_out, title, wrap_at=1000):
+    @staticmethod
+    def show_wrap_message(list_to_out, title, wrap_at=1000):
         """
         Show embed message in discord channel
         with split at wrap_at (default: 1000 chars)
@@ -122,6 +122,7 @@ class UFD(commands.Cog, HelperCommand):
             self.n_args -= 1
             return next(self.args)
         return "char"
+
 
     def select_typecommand(self, choice: str ='char', selection=None):
         """

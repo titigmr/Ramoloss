@@ -22,7 +22,6 @@ IMAGE_REGISTRY_bot=${REGISTRY}/${REGISTRY_USERNAME}/${IMAGE_bot}
 
 export
 
-
 all:
 	@echo "Usage: NAME=ramoloss make deploy | build | \
 	up | down | test | check | push | pull "
@@ -72,7 +71,6 @@ test-%:
 	bash tests/test-$*.sh
 
 # push
-
 push: push-bot
 
 push-%:
@@ -89,3 +87,7 @@ pull-%:
 	then echo ${REGISTRY_TOKEN} | docker login ${REGISTRY} \
 	--username ${REGISTRY_LOGIN} --password-stdin ; fi
 	docker pull ${REGISTRY}/${REGISTRY_LOGIN}/${NAME}-$*:latest
+	docker tag ${REGISTRY}/${REGISTRY_LOGIN}/${NAME}-$*:latest ${NAME}-$*:latest
+
+deploy: pull up
+
