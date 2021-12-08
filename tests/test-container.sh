@@ -1,12 +1,22 @@
 #!/bin/bash
-set -e
+set +e
 
 APP_NAME=${NAME}-bot
-active_container=$(docker ps --filter "name=$APP_NAME" -q)
+container=$(docker ps --filter "name=$APP_NAME" -q)
+ret=0
+timeout=20;
+test_result=1
 
-if [ -z "${active_container}" ]; then
-    echo "no container is running"
-    exit 1
-else
-    echo "container $APP_NAME with id $active_container is running"
+
+until [ "$timeout" -le 0 -o "$test_result" -eq "0" ] ; do
+        [ ! -z $container ]
+        test_result=$?
+        echo "Wait $timeout seconds: ${APP_NAME} is not running";
+        (( timeout-- ))
+        sleep 1
+done
+if [ "$test_result" -gt "0" ] ; then
+        ret=$test_result
+        echo "ERROR: timeout with ${APP_NAME}"
+        exit $ret
 fi
