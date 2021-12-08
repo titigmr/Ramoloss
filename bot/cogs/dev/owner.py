@@ -37,8 +37,8 @@ class Owner(commands.Cog):
     def parse_args(self, cog):
         if cog is None:
             cog = [cg for cg in
-                    self.bot.config["extensions"]
-                    if 'user' in cg]
+                   self.bot.config["extensions"]
+                   if 'user' in cg]
             return cog
 
         if isinstance(cog, str):

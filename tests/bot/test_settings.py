@@ -5,7 +5,6 @@ import discord.ext.test as dpytest
 from bot import Ramoloss
 
 
-
 with open('config.json', 'r', encoding='utf-8') as config_file:
     CONFIG = json.load(config_file)
 

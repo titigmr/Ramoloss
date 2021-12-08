@@ -2,14 +2,7 @@ FROM arm32v7/python:3.10-buster as arch_armv7l
 ENV DISCORD_TOKEN=${DISCORD_TOKEN}
 WORKDIR /ramoloss
 COPY . .
-RUN apt-get update && apt-get install libatlas-base-dev -y \
-<<<<<<< HEAD
-    && pip install --no-cache-dir -e bot/ \
-    -i https://www.piwheels.org/simple
-
-RUN pytest tests/
-=======
-    && pip install --no-cache-dir -r requirements.txt
->>>>>>> 2e73db2c69a28863c50d9d08c1ab95b8ee9ed139
+RUN apt-get update && apt-get install \
+    libatlas-base-dev -y && pip install --no-cache-dir -r requirements.txt
 CMD [ "python", "main.py"]
 

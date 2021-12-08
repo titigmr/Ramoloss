@@ -103,7 +103,6 @@ class Dice(commands.Cog, HelperCommand):
         size = int(size)
         return np.random.randint(low=low, high=high + 1, size=size)
 
-
     def _operator(self, values):
         if len(values) < 3:
             return values

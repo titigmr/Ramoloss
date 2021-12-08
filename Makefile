@@ -9,6 +9,8 @@ DC  := $(shell type -p docker-compose)
 DC_BUILD_ARGS := --pull --force-rm
 DC_RUN_ARGS := -d --no-build
 DC_FILE := docker-compose.yml
+DC_CONFIG_ARGS := -q
+PLATFORM ?= linux/amd64
 
 # docker
 #REGISTRY ?= docker.io
@@ -23,7 +25,7 @@ IMAGE_REGISTRY_bot=${REGISTRY}/${REGISTRY_USERNAME}/${IMAGE_bot}
 export
 
 all:
-	@echo "Usage: NAME=ramoloss make deploy | build | \
+	@echo "Usage: VERSION=latest make deploy | build | \
 	up | down | test | check | push | pull "
 
 
@@ -32,15 +34,12 @@ check-var-%:
 	@: $(if $(value $*),,$(error $* is undefined))
 	@echo ${$*}
 
+# for see configs use: `make DC_CONFIG_ARGS="" check-config`
 check-config:
-	${DC} -f ${DC_FILE} config
-
-check-config-quiet:
-	${DC} -f ${DC_FILE} config -q
+	${DC} -f ${DC_FILE} config ${DC_CONFIG_ARGS}
 
 # build all or one service
 build: check-config-quiet
-	echo ${VERSION}
 	${DC} -f ${DC_FILE} build ${DC_BUILD_ARGS}
 
 build-%:
@@ -48,7 +47,7 @@ build-%:
 	${DC} -f ${DC_FILE} build ${DC_BUILD_ARGS} $*
 
 # up all or one service
-up: check-config-quiet
+up: check-config
 	@if [ -z "${DISCORD_TOKEN}" ] ; \
 	then echo "ERROR: DISCORD_TOKEN \
 	not defined" ; exit 1 ; fi
@@ -64,8 +63,8 @@ down:
 down-%:
 	${DC} -f ${DC_FILE} down $*
 
-# test
-test: test-container
+# test container and app
+test: test-container test-bot
 test-%:
 	@echo "# test $*"
 	bash tests/test-$*.sh
@@ -86,8 +85,9 @@ pull-%:
 	@if [ -n "${REGISTRY_TOKEN}" -a -n "${REGISTRY_LOGIN}" ] ;\
 	then echo ${REGISTRY_TOKEN} | docker login ${REGISTRY} \
 	--username ${REGISTRY_LOGIN} --password-stdin ; fi
-	docker pull ${REGISTRY}/${REGISTRY_LOGIN}/${NAME}-$*:latest
-	docker tag ${REGISTRY}/${REGISTRY_LOGIN}/${NAME}-$*:latest ${NAME}-$*:latest
+	docker pull ${REGISTRY}/${REGISTRY_LOGIN}/${NAME}-$*:${VERSION}
+	docker tag ${REGISTRY}/${REGISTRY_LOGIN}/${NAME}-$*:${VERSION} ${NAME}-$*:${VERSION}
 
+# use `make VERSION=latest deploy`
 deploy: pull up
 

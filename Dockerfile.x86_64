@@ -3,6 +3,5 @@ ENV DISCORD_TOKEN=${DISCORD_TOKEN}
 WORKDIR /ramoloss
 COPY . .
 RUN apt-get update && pip install --no-cache-dir -e bot/
-RUN pytest tests/
 CMD [ "python", "main.py"]
 

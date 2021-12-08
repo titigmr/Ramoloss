@@ -141,7 +141,8 @@ class UltimateFD:
         # check if moves is in REF const and not in exclude moves
         for move_k, move_s in data.items():
             for excluded_move in self.exclude_moves:
-                if self._check_move(move=move, move_k=move_k, out=excluded_move):
+                if self._check_move(move=move, move_k=move_k,
+                                    out=excluded_move):
                     selected_dict_move[move_k] = move_s
         return selected_dict_move
 
@@ -198,7 +199,8 @@ class UltimateFD:
     def _format_overall_stats(self, soup):
         overall_stats = {}
         for st in soup.find_all('div'):
-            if not any(check in st.text for check in DEFAULT_EXCLUDE_OVERALL_STATS):
+            if not any(check in st.text
+                       for check in DEFAULT_EXCLUDE_OVERALL_STATS):
                 if ' — ' in st.text:
                     spiting_stats = st.text.split(" — ")
                     if len(spiting_stats) == 2:

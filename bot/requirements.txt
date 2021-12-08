@@ -3,10 +3,6 @@ discord.py==1.7.3
 lxml==4.6.3
 matplotlib==3.5.0
 numpy==1.21.2
-<<<<<<< HEAD:bot/requirements.txt
-opencv-python==4.5.4.60
-=======
->>>>>>> 2e73db2c69a28863c50d9d08c1ab95b8ee9ed139:requirements.txt
 Pillow==8.3.2
 requests==2.26.0
 pytest==6.2.5

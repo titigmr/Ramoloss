@@ -22,5 +22,6 @@ class John(commands.Cog):
             return True
         return False
 
+
 def setup(bot):
     bot.add_cog(John(bot))

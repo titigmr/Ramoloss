@@ -38,8 +38,9 @@ class UFD(commands.Cog, HelperCommand):
 
         match self.command:
             case None | 'help':
-                help_message = self.help(title=TITLE_UFD,
-                                        description_command=DESCRIPTION_COMMAND_UFD)
+                help_message = self.help(
+                    title=TITLE_UFD,
+                    description_command=DESCRIPTION_COMMAND_UFD)
                 await ctx.channel.send(embed=help_message)
                 return
 
@@ -67,16 +68,17 @@ class UFD(commands.Cog, HelperCommand):
 
             case _:
                 if not self.n_args:
-                    raise ValueError('Must choice a move. Availables moves with "ufd list moves"')
+                    raise ValueError(
+                        'Must choice a move. Availables moves with "ufd list moves"')
 
                 char = UltimateFD(character=command,
-                                    moves=self.args,
-                                    get_hitbox=True,
-                                    args_stats=None)
-
+                                  moves=self.args,
+                                  get_hitbox=True,
+                                  args_stats=None)
 
                 for move, statistics in char.stats.items():
-                    embed, hitbox = self.create_stats(move=move, statistics=statistics)
+                    embed, hitbox = self.create_stats(
+                        move=move, statistics=statistics)
                     await ctx.channel.send(embed=embed)
 
                     if hitbox is not None:
@@ -90,7 +92,6 @@ class UFD(commands.Cog, HelperCommand):
             await ctx.send(f'```ERROR: {error.__cause__}```')
         print(error)
 
-
     def show_list(self, selection):
         """
         Show list of characters with filter not None
@@ -99,7 +100,6 @@ class UFD(commands.Cog, HelperCommand):
         selection = "" if selection is None else selection
         names = [name for name in all_characters if selection in name]
         return names
-
 
     @staticmethod
     def show_wrap_message(list_to_out, title, wrap_at=1000):
@@ -113,7 +113,6 @@ class UFD(commands.Cog, HelperCommand):
                                     replace_whitespace=False).wrap(output)
         return [discord.Embed(title=title, description=m) for m in send_messages]
 
-
     def select_subcommand(self):
         """
         Select subcommand, default 'char' command
@@ -123,8 +122,7 @@ class UFD(commands.Cog, HelperCommand):
             return next(self.args)
         return "char"
 
-
-    def select_typecommand(self, choice: str ='char', selection=None):
+    def select_typecommand(self, choice: str = 'char', selection=None):
         """
         Select type command
             - if type is 'char' return embed
@@ -142,13 +140,12 @@ class UFD(commands.Cog, HelperCommand):
                 title = "Liste des personnages"
             case 'move':
                 list_out = [f"**{ref}** ({move.title()})"
-                      for ref, move in REF_ATK.items()]
+                            for ref, move in REF_ATK.items()]
                 title = "Liste des mouvements"
 
         list_embed = self.show_wrap_message(list_to_out=list_out,
                                             title=title)
         return list_embed
-
 
     def create_stats(self, move, statistics, hitbox=None):
         """
@@ -157,8 +154,8 @@ class UFD(commands.Cog, HelperCommand):
 
         title = f"**{self.command.title().replace('_', ' ')} – {move.title()}**"
         embed = discord.Embed(title=title,
-                                color=0x03F8FC,
-                                url=self.url + self.command)
+                              color=0x03F8FC,
+                              url=self.url + self.command)
         for stats, amount in statistics.items():
             if stats == "hitbox":
                 hitbox = amount
@@ -167,6 +164,7 @@ class UFD(commands.Cog, HelperCommand):
                                 value=str(f"""```css\n{amount}```"""),
                                 inline=True)
         return embed, hitbox
+
 
 def setup(bot):
     bot.add_cog(UFD(bot))

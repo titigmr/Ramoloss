@@ -40,7 +40,9 @@ class DiceGenerator:
         self.crop = crop
         self.directory = self.get_path(directory)
 
-    def create_lauch_dice(self, inputs_dice: list, colors='green', line_return: int = 3, save=True):
+    def create_lauch_dice(
+            self, inputs_dice: list, colors='green', line_return: int = 3,
+            save=True):
         """
         Draw a dice or multiple dices side by side with
         a value number and a color.
@@ -64,7 +66,8 @@ class DiceGenerator:
         list_colors = self.convert_colors(colors, inputs_dice)
 
         if len(list_colors) != len(inputs_dice):
-            raise ValueError('Colors and dice numbers must be in the same size')
+            raise ValueError(
+                'Colors and dice numbers must be in the same size')
 
         for (n, i), c in zip(enumerate(inputs_dice), list_colors):
             if (n % line_return == 0) and (n != 0):
@@ -83,7 +86,8 @@ class DiceGenerator:
                     list_img, how='horizontal', save=False)
                 list_lines.append(line_img)
 
-        output_img = self.create_side_by_side(list_lines, how='vertical', save=False)
+        output_img = self.create_side_by_side(
+            list_lines, how='vertical', save=False)
         if save:
             path = os.path.join(self.directory, 'out.png')
             output_img.save(path)
@@ -115,8 +119,10 @@ class DiceGenerator:
         size = self.reformat_size(value, size)
         img = self.write_white_img(self.shape)
         rect_border = cv2.rectangle(img,
-                                    (self.pt1[0] - border, self.pt1[1] + border),
-                                    (self.pt2[0] + border, self.pt2[1] - border),
+                                    (self.pt1[0] - border,
+                                     self.pt1[1] + border),
+                                    (self.pt2[0] + border,
+                                     self.pt2[1] - border),
                                     color_b,
                                     self.thinkness)
 
@@ -129,8 +135,8 @@ class DiceGenerator:
             fontcolor = 'white'
 
         plt.imshow(rect_center)
-        plt.annotate(value, xy=self.xy, size=size, ha='center', color=fontcolor,
-                     va='center', fontname=font, weight=weight)
+        plt.annotate(value, xy=self.xy, size=size, ha='center',
+                     color=fontcolor, va='center', fontname=font, weight=weight)
         plt.axis('off')
         plt.savefig(path)
         plt.close()
@@ -183,7 +189,8 @@ class DiceGenerator:
                             (img_height + crop_height) // 2))
 
     def create_side_by_side(
-            self, list_img: list, name='line', how='horizontal', save=False, saved_images=False):
+            self, list_img: list, name='line', how='horizontal', save=False,
+            saved_images=False):
         """Concatenate multiple PIL images verticaly or horizontaly"""
 
         if saved_images:
@@ -196,7 +203,8 @@ class DiceGenerator:
             total_width = sum(widths)
             max_height = max(heights)
 
-            new_im = Image.new('RGB', size=(total_width, max_height), color=(255, 255, 255))
+            new_im = Image.new('RGB', size=(
+                total_width, max_height), color=(255, 255, 255))
 
             x_offset = 0
             for im in images:
@@ -207,7 +215,8 @@ class DiceGenerator:
             max_width = max(widths)
             total_height = sum(heights)
 
-            new_im = Image.new('RGB', (max_width, total_height), color=(255, 255, 255))
+            new_im = Image.new(
+                'RGB', (max_width, total_height), color=(255, 255, 255))
 
             y_offset = 0
             for im in images:
@@ -224,7 +233,8 @@ class DiceGenerator:
     def convert_colors(input_color, input_dice):
         """ Convert a list of color with the same size at the list input dice"""
         if isinstance(input_color, list):
-            colors = [REF_COLORS[c] for c in input_color if c in REF_COLORS.keys()]
+            colors = [REF_COLORS[c]
+                      for c in input_color if c in REF_COLORS.keys()]
             if len(input_color) != len(colors):
                 raise ColorError
         else:

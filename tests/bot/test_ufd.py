@@ -37,8 +37,9 @@ class MockResponse:
     def get(self):
         return
 
+
 def mock_get(*args, **kwargs):
-        return MockResponse()
+    return MockResponse()
 
 
 class TestUFD:
