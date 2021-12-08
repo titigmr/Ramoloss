@@ -2,7 +2,6 @@ name: Continious integration (CI)
 
 on:
   workflow_call:
-<<<<<<< HEAD
     secrets:
       DOCKERHUB_USERNAME:
         required: true
@@ -22,12 +21,6 @@ on:
   pull_request:
     branches:
       - main
-=======
-  pull_request:
-    branches:
-      - main
-      - dev
->>>>>>> a2f79f044657412b0ac6d5184d2bfef6e671149b
 
 jobs:
   build:
@@ -70,11 +63,7 @@ jobs:
           bash ci/build.sh
 
       - name: push on ${{ matrix.registry }} if success on main branch
-<<<<<<< HEAD
         if: ( success() && github.ref == 'refs/heads/main')
-=======
-        if: ( success() && github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev')
->>>>>>> a2f79f044657412b0ac6d5184d2bfef6e671149b
         env:
           REGISTRY: ${{ matrix.registry }}
           REGISTRY_USERNAME: ${{ secrets[matrix.username] }}
