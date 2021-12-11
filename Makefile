@@ -3,6 +3,7 @@ SHELL = /bin/bash
 NAME ?= ramoloss
 ARCH ?= $(shell uname -m)
 VERSION ?= $(shell git describe --tag --abbrev=0)
+SERVICES := bot db log
 
 # docker-compose
 DC  := $(shell type -p docker-compose)
@@ -16,11 +17,11 @@ PLATFORM ?= linux/amd64
 #REGISTRY ?= docker.io
 REGISTRY ?= ghcr.io
 REPOSITORY ?= ramoloss
+REGISTRY_USERNAME ?= toto
 
 # image
-IMAGE_bot=${NAME}-bot:${VERSION}
-IMAGE_REGISTRY_bot=${REGISTRY}/${REGISTRY_USERNAME}/${IMAGE_bot}
-
+IMAGES = $(foreach srv, $(SERVICES), ${NAME}-${srv}:${VERSION})
+IMAGES_REGISTRY=$(foreach im, $(IMAGE), ${REGISTRY}/${REGISTRY_USERNAME}/${im})
 
 export
 
@@ -30,7 +31,7 @@ all:
 
 
 # check var or config
-check-var-%:
+check-var:
 	@: $(if $(value $*),,$(error $* is undefined))
 	@echo ${$*}
 
@@ -39,7 +40,7 @@ check-config:
 	${DC} -f ${DC_FILE} config ${DC_CONFIG_ARGS}
 
 # build all or one service
-build: check-config-quiet
+build: check-config
 	${DC} -f ${DC_FILE} build ${DC_BUILD_ARGS}
 
 build-%:
@@ -53,7 +54,7 @@ up: check-config
 	not defined" ; exit 1 ; fi
 	${DC} -f ${DC_FILE} up ${DC_RUN_ARGS}
 
-up-%: check-config-quiet
+up-%: check-config
 	${DC} -f ${DC_FILE} up ${DC_RUN_ARGS} $*
 
 # down all or one service
@@ -76,8 +77,8 @@ push-%:
 	@if [ -z "${REGISTRY}" -a -z "${REGISTRY_USERNAME}" ] ; \
 	then echo "ERROR: REGISTRY and REGISTRY_USERNAME \
 	not defined" ; exit 1 ; fi
-	docker tag ${IMAGE_$*} ${IMAGE_REGISTRY_$*}
-	docker push ${IMAGE_REGISTRY_$*}
+	docker tag ${NAME}-$*:${VERSION} ${REGISTRY}/${REGISTRY_LOGIN}/${NAME}-$*:${VERSION}
+	docker push ${REGISTRY}/${REGISTRY_LOGIN}/${NAME}-$*:${VERSION}
 
 pull: pull-bot
 
@@ -88,6 +89,7 @@ pull-%:
 	docker pull ${REGISTRY}/${REGISTRY_LOGIN}/${NAME}-$*:${VERSION}
 	docker tag ${REGISTRY}/${REGISTRY_LOGIN}/${NAME}-$*:${VERSION} ${NAME}-$*:${VERSION}
 
-# use `make VERSION=latest deploy`
+
+deploy: VERSION=latest
 deploy: pull up
 
