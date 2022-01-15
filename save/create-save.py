@@ -8,8 +8,8 @@ parser.add_argument('--name', '-n', nargs='*')
 
 def write_response(url, file):
     content = requests.get(url).content
-    with open(f'save/{file}.html', 'wb') as f:
-        f.write(content)
+    with open(f'save/{file}.html', 'wb') as file:
+        file.write(content)
 
 
 if __name__ == '__main__':

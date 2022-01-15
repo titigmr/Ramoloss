@@ -31,7 +31,7 @@ all:
 
 
 # check var or config
-check-var:
+check-var-%:
 	@: $(if $(value $*),,$(error $* is undefined))
 	@echo ${$*}
 
@@ -69,6 +69,10 @@ test: test-container test-bot
 test-%:
 	@echo "# test $*"
 	bash tests/test-$*.sh
+
+pytest:
+	docker exec 
+
 
 # push
 push: push-bot

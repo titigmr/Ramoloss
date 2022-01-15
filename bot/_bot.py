@@ -1,3 +1,4 @@
+import os
 from discord.ext.commands import Bot
 
 
@@ -5,7 +6,7 @@ class Ramoloss(Bot):
     def __init__(self, config, token, **kwargs):
         self.config = config
         self.discord_token = token
-
+        os.environ["command_prefix"] = self.config["command_prefix"]
         super().__init__(
             command_prefix=self.config["command_prefix"],
             description=self.config["description"],

@@ -1,13 +1,9 @@
-import json
+import os
 import discord
 
-
-with open('config.json', 'r', encoding='utf-8') as f:
-    config_arg = json.load(f)["command_prefix"]
-
+config_arg = os.environ.get('command_prefix')
 
 REF_COLOR = {'dice': '#8B0000'}
-
 TITLE_DICE = "**Roll a random dice**"
 DESCRIPTION_COMMAND_DICE = f"""
                         Roll one six sided die.

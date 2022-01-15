@@ -1,4 +1,6 @@
 FROM python:3.10-buster as x86_64
+RUN useradd -ms /bin/bash bot
+USER bot
 ENV DISCORD_TOKEN=${DISCORD_TOKEN}
 WORKDIR /ramoloss
 COPY . .

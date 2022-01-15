@@ -1,4 +1,5 @@
 import json
+import os
 import requests
 import pytest
 import discord
@@ -23,23 +24,26 @@ def bot_instance(event_loop):
     return bot_ramoloss
 
 
-class MockResponse:
-    def __init__(self):
-        self.status_code = 200
-        self.content = MockResponse.open_file('wario')
-
-    @staticmethod
-    def open_file(filename):
-        with open(f'save/{filename}.html', 'r', encoding='utf-8') as file:
-            file_content = str(file.readlines())
-        return file_content
-
-    def get(self):
-        return
-
-
 def mock_get(*args, **kwargs):
-    return MockResponse()
+    class MockResponse:
+        def __init__(self, content):
+            self.status_code = 200
+            self.content = content
+
+        def get(self):
+            return self.content
+    print(args[0])
+    if 'wario' in args[0]:
+        file_content = open_file('wario')
+    else:
+        file_content = open_file('index')
+    return MockResponse(file_content)
+
+
+def open_file(filename):
+    with open(os.path.join('save', f'{filename}.html'), 'r', encoding='utf-8') as file:
+        file_content = str(file.readlines())
+    return file_content
 
 
 class TestUFD:
@@ -56,7 +60,7 @@ class TestUFD:
         assert 'http' not in char
 
     def test_move(self, monkeypatch):
-        monkeypatch.setattr(requests, "get", mock_get)
+        monkeypatch.setattr(requests, 'get', mock_get)
         ufd = UltimateFD(character='wario',
                          moves='fair')
         move = ufd.stats

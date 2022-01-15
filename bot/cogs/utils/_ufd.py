@@ -37,14 +37,14 @@ class UltimateFD:
                  moves=None,
                  args_stats=None,
                  get_hitbox: bool = False,
-                 exclude_stats: list = ['movename',
-                                        'whichhitbox',
-                                        'notes'],
-                 exclude_moves: list = ['dodge']):
+                 exclude_stats: list = None,
+                 exclude_moves: list = None):
 
         self.char = character
-        self.exclude_moves = exclude_moves
-        self.exclude_stats = exclude_stats
+        self.exclude_moves = exclude_stats if exclude_stats is not None else [
+            'movename', 'whichhitbox', 'notes']
+        self.exclude_stats = exclude_moves if exclude_moves is not None else [
+            'dodge']
         self.url = "https://ultimateframedata.com/"
         self.stats = {}
         self.avalaible_stats = {}

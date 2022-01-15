@@ -1,8 +1,10 @@
 FROM arm32v7/python:3.10-buster as arch_armv7l
+RUN useradd -ms /bin/bash bot
+USER bot
 ENV DISCORD_TOKEN=${DISCORD_TOKEN}
 WORKDIR /ramoloss
 COPY . .
 RUN apt-get update && apt-get install \
-    libatlas-base-dev -y && pip install --no-cache-dir -r requirements.txt
+    libatlas-base-dev -y && pip install --no-cache-dir -e /bot
 CMD [ "python", "main.py"]
 
