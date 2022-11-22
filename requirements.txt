@@ -3,5 +3,5 @@ discord.py==1.7.3
 lxml==4.6.5
 matplotlib==3.4.3
 numpy==1.21.2
-Pillow==8.3.2
+Pillow==9.3.0
 requests==2.26.0
